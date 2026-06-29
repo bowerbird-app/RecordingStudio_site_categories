@@ -28,7 +28,7 @@ Then sign in with:
 
 - `/` - overview page for the demo
 - `/recording_studio_site_categories` - registered category groups
-- `/pages` - create and edit demo pages with site colours
+- `/pages` - create, edit, and delete demo pages with site colours
 - `/recording_studio` - mounted RecordingStudio engine entrypoint
 - `/users/sign_in` - Devise sign-in page
 - `/up` - Rails health check

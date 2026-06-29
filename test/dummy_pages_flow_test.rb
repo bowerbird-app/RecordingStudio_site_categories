@@ -69,4 +69,15 @@ class DummyPagesFlowTest < ActionDispatch::IntegrationTest
     assert_equal "Updated Page", page.reload.title
     assert_equal "Black", page.site_colour
   end
+
+  test "destroy removes an existing page" do
+    page = Page.create!(title: "Disposable Page", site_colour: "Black")
+
+    assert_difference("Page.count", -1) do
+      delete page_path(page)
+    end
+
+    assert_redirected_to pages_path
+    assert_nil Page.find_by(id: page.id)
+  end
 end

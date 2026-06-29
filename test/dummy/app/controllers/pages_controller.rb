@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class PagesController < ApplicationController
-  before_action :set_page, only: %i[edit update]
+  before_action :set_page, only: %i[edit update destroy]
 
   def index
     @pages = Page.order(:title, :created_at)
@@ -34,6 +34,12 @@ class PagesController < ApplicationController
     else
       render :edit, status: :unprocessable_entity
     end
+  end
+
+  def destroy
+    @page.destroy!
+
+    redirect_to pages_path, notice: "Page deleted successfully."
   end
 
   private

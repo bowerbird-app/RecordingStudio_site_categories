@@ -1,7 +1,7 @@
 <div class="mx-auto flex w-full max-w-6xl flex-col gap-6">
   <%= render FlatPack::PageTitle::Component.new(
     title: "Pages",
-    subtitle: "Pages under #{@workspace.name} with their selected site colour.",
+    subtitle: "Pages under #{@workspace.name} with their selected site colour and full CRUD actions.",
     variant: :h1
   ) %>
 
@@ -16,7 +16,28 @@
       <%= render FlatPack::Table::Component.new(data: @pages, class: "text-sm") do |table| %>
         <% table.column(title: "Title", html: ->(page) { page.title }) %>
         <% table.column(title: "Site colour", html: ->(page) { page.site_colour.presence || "—" }) %>
-        <% table.column(title: "Actions", html: ->(page) { helpers.link_to("Edit", edit_page_path(page), class: "underline") }) %>
+        <% table.column(title: "Actions", html: lambda { |page|
+          helpers.content_tag(:div, class: "flex flex-wrap gap-2") do
+            helpers.safe_join(
+              [
+                helpers.link_to(
+                  helpers.render(FlatPack::Button::Component.new(text: "Edit", style: :secondary)),
+                  edit_page_path(page),
+                  class: "inline-flex"
+                ),
+                helpers.link_to(
+                  helpers.render(FlatPack::Button::Component.new(text: "Delete", style: :secondary)),
+                  page_path(page),
+                  class: "inline-flex",
+                  data: {
+                    turbo_method: :delete,
+                    turbo_confirm: "Delete #{page.title}?"
+                  }
+                )
+              ]
+            )
+          end
+        }) %>
       <% end %>
     <% end %>
   <% end %>
