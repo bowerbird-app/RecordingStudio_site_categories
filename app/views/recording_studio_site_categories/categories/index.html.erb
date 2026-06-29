@@ -1,0 +1,17 @@
+<div class="mx-auto flex w-full max-w-5xl flex-col gap-6">
+  <%= render FlatPack::PageTitle::Component.new(
+    title: "Site categories",
+    subtitle: "Category groups registered at boot for the current host app.",
+    variant: :h1
+  ) %>
+
+  <%= render FlatPack::Card::Component.new(style: :default) do |card| %>
+    <% card.body do %>
+      <%= render FlatPack::Table::Component.new(data: @groups, class: "text-sm") do |table| %>
+        <% table.column(title: "Key", html: ->(group) { group.key.to_s }) %>
+        <% table.column(title: "Label", html: ->(group) { group.label }) %>
+        <% table.column(title: "Items", html: ->(group) { group.items.join(", ") }) %>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>

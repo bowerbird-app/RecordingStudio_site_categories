@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
-GemTemplate::Engine.routes.draw do
-  root "home#index"
+RecordingStudioSiteCategories::Engine.routes.draw do
+  root "categories#index"
+  resources :categories, only: :index
 end

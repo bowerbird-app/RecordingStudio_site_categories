@@ -5,14 +5,13 @@
       icon_only: true,
       style: :ghost,
       size: :md,
-      aria: {label: "Toggle sidebar"},
+      aria: { label: "Toggle sidebar" },
       data: {
         "flat-pack--sidebar-layout-target": "mobileToggle",
         action: "click->flat-pack--sidebar-layout#toggleMobile"
       },
       class: "md:hidden"
     ) %>
-
   <% end %>
 
   <% nav.center do %>

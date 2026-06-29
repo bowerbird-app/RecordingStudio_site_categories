@@ -23,7 +23,7 @@ class RootSwitchDropdownTest < ActionDispatch::IntegrationTest
     assert_includes response.body, workspace.name
   end
 
-  test "root switch page renders with the host sidebar" do
+  test "root switch page renders with the site categories sidebar" do
     user = User.find_or_create_by!(email: "root-switch-page-test@example.com") do |record|
       record.password = "Password123!"
       record.password_confirmation = "Password123!"
@@ -37,10 +37,11 @@ class RootSwitchDropdownTest < ActionDispatch::IntegrationTest
     get "/recording_studio_root_switchable/v1/root_switch?scope=all_workspaces"
 
     assert_response :success
-    assert_includes response.body, "Install"
+    assert_includes response.body, "Categories"
+    assert_includes response.body, "Pages"
   end
 
-  test "switching returns to the current page when it is a valid internal route" do
+  test "switching returns to the pages index when it is a valid internal route" do
     user = User.find_or_create_by!(email: "root-switch-redirect-test@example.com") do |record|
       record.password = "Password123!"
       record.password_confirmation = "Password123!"
@@ -57,11 +58,11 @@ class RootSwitchDropdownTest < ActionDispatch::IntegrationTest
       scope: "all_workspaces",
       root_switch: {
         root_recording_id: target_root_recording.id,
-        return_to: "/docs/install"
+        return_to: "/pages"
       }
     }
 
-    assert_redirected_to "/docs/install"
+    assert_redirected_to "/pages"
   end
 
   test "switching falls back to home when return_to is not a valid internal route" do

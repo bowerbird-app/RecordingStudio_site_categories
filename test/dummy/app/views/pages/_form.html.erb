@@ -1,0 +1,44 @@
+<%= render FlatPack::Card::Component.new(style: :default) do |card| %>
+  <% card.body(class: "space-y-[var(--stack-gap-md)]") do %>
+    <%= form_with model: page do |form| %>
+      <% if page.errors.any? %>
+        <%= render FlatPack::Alert::Component.new(
+          title: "#{pluralize(page.errors.count, "error")} prevented this page from being saved:",
+          description: page.errors.full_messages.join(", "),
+          variant: :danger,
+          dismissible: true
+        ) %>
+      <% end %>
+
+      <div class="space-y-[var(--stack-gap-md)]">
+        <%= render FlatPack::TextInput::Component.new(
+          name: "#{form.object_name}[title]",
+          label: "Title",
+          value: page.title,
+          placeholder: "Page title",
+          required: true,
+          error: page.errors[:title].first
+        ) %>
+
+        <%= recording_studio_site_category_select(
+          form,
+          :colour,
+          attribute_name: :site_colour,
+          searchable: true
+        ) %>
+
+        <div class="flex gap-2 pt-1">
+          <%= render FlatPack::Button::Component.new(
+            text: page.persisted? ? "Save page" : "Create page",
+            type: "submit",
+            style: :primary
+          ) %>
+
+          <%= link_to pages_path, class: "inline-flex" do %>
+            <%= render FlatPack::Button::Component.new(text: "Cancel", style: :secondary) %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>

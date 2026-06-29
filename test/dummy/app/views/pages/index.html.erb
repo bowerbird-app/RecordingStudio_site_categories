@@ -1,0 +1,23 @@
+<div class="mx-auto flex w-full max-w-6xl flex-col gap-6">
+  <%= render FlatPack::PageTitle::Component.new(
+    title: "Pages",
+    subtitle: "Pages under #{@workspace.name} with their selected site colour.",
+    variant: :h1
+  ) %>
+
+  <div class="flex justify-end">
+    <%= link_to new_page_path, class: "inline-flex" do %>
+      <%= render FlatPack::Button::Component.new(text: "New page", style: :primary) %>
+    <% end %>
+  </div>
+
+  <%= render FlatPack::Card::Component.new(style: :default) do |card| %>
+    <% card.body do %>
+      <%= render FlatPack::Table::Component.new(data: @pages, class: "text-sm") do |table| %>
+        <% table.column(title: "Title", html: ->(page) { page.title }) %>
+        <% table.column(title: "Site colour", html: ->(page) { page.site_colour.presence || "—" }) %>
+        <% table.column(title: "Actions", html: ->(page) { helpers.link_to("Edit", edit_page_path(page), class: "underline") }) %>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>
