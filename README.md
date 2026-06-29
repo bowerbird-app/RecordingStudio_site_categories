@@ -1,7 +1,7 @@
 # recording_studio_site_categories
 
 `recording_studio_site_categories` is a small Rails engine gem that provides a site-level, in-memory category registry.
-Other gems and host apps can register category groups during boot, then use those groups for validation and FlatPack-backed form inputs.
+Other gems and host apps can register category groups during boot, then use those groups for validation and optional FlatPack-backed form inputs.
 
 ## Why this gem exists
 
@@ -21,6 +21,8 @@ Then install dependencies:
 ```bash
 bundle install
 ```
+
+FlatPack is optional. If your app includes FlatPack, the gem will render FlatPack components for its helper and mounted index page. Without FlatPack, the helper falls back to a standard Rails `<select>` and the mounted index page renders plain HTML.
 
 Run the install generator to create the host initializer:
 
@@ -70,7 +72,7 @@ The concern allows blank values, rejects values outside the registered group, an
 
 ## View helpers
 
-The engine provides helpers for labels, values, validation checks, and FlatPack select rendering:
+The engine provides helpers for labels, values, validation checks, and select rendering:
 
 - `recording_studio_site_category_label(group_key)`
 - `recording_studio_site_category_items(group_key)`
@@ -78,7 +80,7 @@ The engine provides helpers for labels, values, validation checks, and FlatPack 
 - `recording_studio_site_category_valid?(group_key, value)`
 - `recording_studio_site_category_select(form, group_key, attribute_name: group_key, **system_args)`
 
-`recording_studio_site_category_select` renders the installed FlatPack select component with the current field value and validation error state.
+`recording_studio_site_category_select` renders the installed FlatPack select component when FlatPack is available. Otherwise it falls back to the host app's standard Rails form builder select so category-backed forms still work without an extra runtime dependency.
 
 ## Runtime and schema notes
 
