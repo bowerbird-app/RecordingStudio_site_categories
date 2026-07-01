@@ -13,7 +13,10 @@
       variant: :h2
     ) %>
 
-    <pre class="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm"><code>recording_studio_site_category_label(:colour)  <span class="text-slate-400"># => "<%= @colour_label %>"</span></code></pre>
+    <%= render FlatPack::CodeBlock::Component.new(
+      code: "recording_studio_site_category_label(:colour)  # => \"#{@colour_label}\"",
+      language: "ruby"
+    ) %>
   </section>
 
   <%# ── Items / Options Helper ── %>
@@ -24,8 +27,10 @@
       variant: :h2
     ) %>
 
-    <pre class="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm"><code>recording_studio_site_category_items(:colour)   <span class="text-slate-400"># => <%= @colour_items.inspect %></span>
-recording_studio_site_category_options(:colour) <span class="text-slate-400"># => <%= recording_studio_site_category_options(:colour).inspect %></span></code></pre>
+    <%= render FlatPack::CodeBlock::Component.new(
+      code: "recording_studio_site_category_items(:colour)   # => #{@colour_items.inspect}\nrecording_studio_site_category_options(:colour) # => #{recording_studio_site_category_options(:colour).inspect}",
+      language: "ruby"
+    ) %>
   </section>
 
   <%# ── Validation Helper ── %>
@@ -68,10 +73,36 @@ recording_studio_site_category_options(:colour) <span class="text-slate-400"># =
       variant: :h2
     ) %>
 
+    <%# ── Single Select ── %>
     <p class="text-sm text-slate-600">
-      This helper is used in the Pages form. See <strong>New page</strong> or <strong>Edit page</strong> to try it out.
+      <strong>Single select:</strong>
     </p>
 
-    <pre class="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm"><code>&lt;%= recording_studio_site_category_select(form, :colour, attribute_name: :site_colour, searchable: true) %&gt;</code></pre>
+    <div class="rounded-lg border border-slate-200 bg-white p-6">
+      <%= form_with model: @demo_page, url: "#", method: :get, builder: nil do |form| %>
+        <%= recording_studio_site_category_select(form, :colour, attribute_name: :site_colour, searchable: true) %>
+      <% end %>
+    </div>
+
+    <%= render FlatPack::CodeBlock::Component.new(code: @select_usage_code) %>
+
+    <%# ── Multiple Select ── %>
+    <p class="text-sm text-slate-600 mt-6">
+      <strong>Multiple select:</strong>
+    </p>
+
+    <div class="rounded-lg border border-slate-200 bg-white p-6">
+      <%= form_with model: @demo_page, url: "#", method: :get, builder: nil do |form| %>
+        <%= recording_studio_site_category_select(
+          form,
+          :publication_type,
+          attribute_name: :site_publications,
+          searchable: true,
+          multiple: true
+        ) %>
+      <% end %>
+    </div>
+
+    <%= render FlatPack::CodeBlock::Component.new(code: @select_multiple_direct_code) %>
   </section>
 </div>

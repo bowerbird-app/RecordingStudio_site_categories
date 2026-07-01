@@ -12,10 +12,12 @@
       variant: :h2
     ) %>
 
-    <pre class="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm"><code><span class="text-slate-400"># Gemfile</span>
-gem "recording_studio_site_categories"</code></pre>
-
-    <pre class="mt-3 rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm"><code>bundle install</code></pre>
+    <%= render FlatPack::CodeBlock::Component.new(
+      snippets: [
+        { label: "Gemfile", language: "ruby", code: '# Gemfile\ngem "recording_studio_site_categories"' },
+        { label: "Terminal", language: "shell", code: "bundle install" }
+      ]
+    ) %>
   </section>
 
   <section>
@@ -25,7 +27,10 @@ gem "recording_studio_site_categories"</code></pre>
       variant: :h2
     ) %>
 
-    <pre class="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm"><code>bin/rails generate recording_studio_site_categories:install</code></pre>
+    <%= render FlatPack::CodeBlock::Component.new(
+      code: "bin/rails generate recording_studio_site_categories:install",
+      language: "shell"
+    ) %>
 
     <p class="mt-3 text-sm text-slate-600">
       This creates <code class="rounded bg-slate-100 px-1 py-0.5 text-xs">config/initializers/recording_studio_site_categories.rb</code>
@@ -40,8 +45,10 @@ gem "recording_studio_site_categories"</code></pre>
       variant: :h2
     ) %>
 
-    <pre class="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm"><code><span class="text-slate-400"># config/routes.rb</span>
-mount RecordingStudioSiteCategories::Engine, at: "/site_categories"</code></pre>
+    <%= render FlatPack::CodeBlock::Component.new(
+      code: "# config/routes.rb\nmount RecordingStudioSiteCategories::Engine, at: \"/site_categories\"",
+      language: "ruby"
+    ) %>
 
     <p class="mt-3 text-sm text-slate-600">
       Visit <code class="rounded bg-slate-100 px-1 py-0.5 text-xs">/site_categories</code> to see all registered groups.
@@ -51,18 +58,24 @@ mount RecordingStudioSiteCategories::Engine, at: "/site_categories"</code></pre>
   <section>
     <%= render FlatPack::PageTitle::Component.new(
       title: "4. Use in a model",
-      subtitle: "Validate an attribute against a registered group.",
+      subtitle: "Validate single and multiple attributes against registered groups.",
       variant: :h2
     ) %>
 
-    <pre class="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm"><code><span class="text-slate-400"># app/models/page.rb</span>
-class Page &lt; ApplicationRecord
-  include RecordingStudioSiteCategories::HasCategory.for(:colour, attribute: :site_colour)
-end</code></pre>
-
-    <p class="mt-3 text-sm text-slate-600">
-      Also add the column via migration: <code class="rounded bg-slate-100 px-1 py-0.5 text-xs">add_column :pages, :site_colour, :string</code>
-    </p>
+    <%= render FlatPack::CodeBlock::Component.new(
+      snippets: [
+        {
+          label: "Model",
+          language: "ruby",
+          code: "# app/models/page.rb\nclass Page < ApplicationRecord\n  include RecordingStudioSiteCategories::HasCategory.for(:colour, attribute: :site_colour)\n  include RecordingStudioSiteCategories::HasCategory.for(:publication_type, attribute: :site_publications, multiple: true)\nend"
+        },
+        {
+          label: "Migration",
+          language: "ruby",
+          code: "add_column :pages, :site_colour, :string\nadd_column :pages, :site_publications, :text, array: true, default: []"
+        }
+      ]
+    ) %>
   </section>
 
   <section>
@@ -72,7 +85,6 @@ end</code></pre>
       variant: :h2
     ) %>
 
-    <pre class="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm"><code><span class="text-slate-400">&lt;%# app/views/pages/_form.html.erb %&gt;</span>
-&lt;%= recording_studio_site_category_select(form, :colour, attribute_name: :site_colour) %&gt;</code></pre>
+    <%= render FlatPack::CodeBlock::Component.new(code: "# ERB usage\n#{@erb_usage_code}") %>
   </section>
 </div>

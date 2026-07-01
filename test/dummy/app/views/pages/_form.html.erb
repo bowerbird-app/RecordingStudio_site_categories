@@ -25,6 +25,14 @@
       searchable: true
     ) %>
 
+    <%= recording_studio_site_category_select(
+      form,
+      :publication_type,
+      attribute_name: :site_publications,
+      searchable: true,
+      multiple: true
+    ) %>
+
     <div class="flex gap-2 pt-1">
       <%= render FlatPack::Button::Component.new(
         text: page.persisted? ? "Save page" : "Create page",

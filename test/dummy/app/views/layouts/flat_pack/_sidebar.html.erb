@@ -10,12 +10,6 @@
   <% sidebar.items do %>
     <nav class="py-4 space-y-1" aria-label="Main navigation">
       <%= render FlatPack::Sidebar::Item::Component.new(
-        label: "Home",
-        href: main_app.root_path,
-        icon: :home
-      ) %>
-
-      <%= render FlatPack::Sidebar::Item::Component.new(
         label: "Categories",
         href: recording_studio_site_categories.root_path,
         icon: :queue_list
@@ -41,8 +35,8 @@
         icon: :cog_6_tooth
       ) %>
 
-      <%= render FlatPack::Sidebar::Item::Component.new(
-        label: "View Helpers",
+        <%= render FlatPack::Sidebar::Item::Component.new(
+          label: "Helpers",
         href: main_app.helpers_path,
         icon: :code_bracket
       ) %>

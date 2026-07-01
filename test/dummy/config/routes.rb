@@ -14,5 +14,5 @@ Rails.application.routes.draw do
   get "install", to: "install#show", as: :install
   get "config",  to: "config#show",  as: :config
 
-  root "home#index"
+  root to: redirect("/recording_studio_site_categories/"), as: nil
 end
