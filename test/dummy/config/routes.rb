@@ -10,5 +10,9 @@ Rails.application.routes.draw do
 
   resources :pages, only: %i[index new create edit update destroy]
 
+  get "helpers", to: "helpers#show", as: :helpers
+  get "install", to: "install#show", as: :install
+  get "config",  to: "config#show",  as: :config
+
   root "home#index"
 end

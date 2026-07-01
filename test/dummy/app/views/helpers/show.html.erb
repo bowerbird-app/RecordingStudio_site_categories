@@ -1,0 +1,77 @@
+<div class="mx-auto flex w-full max-w-4xl flex-col gap-8">
+  <%= render FlatPack::PageTitle::Component.new(
+    title: "View Helpers",
+    subtitle: "Available helpers from the recording_studio_site_categories gem.",
+    variant: :h1
+  ) %>
+
+  <%# ── Label Helper ── %>
+  <section id="label-helper">
+    <%= render FlatPack::PageTitle::Component.new(
+      title: "recording_studio_site_category_label",
+      subtitle: "Returns the display label for a registered group key.",
+      variant: :h2
+    ) %>
+
+    <pre class="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm"><code>recording_studio_site_category_label(:colour)  <span class="text-slate-400"># => "<%= @colour_label %>"</span></code></pre>
+  </section>
+
+  <%# ── Items / Options Helper ── %>
+  <section id="items-helper">
+    <%= render FlatPack::PageTitle::Component.new(
+      title: "recording_studio_site_category_items / options",
+      subtitle: "Returns the allowed values for a registered group.",
+      variant: :h2
+    ) %>
+
+    <pre class="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm"><code>recording_studio_site_category_items(:colour)   <span class="text-slate-400"># => <%= @colour_items.inspect %></span>
+recording_studio_site_category_options(:colour) <span class="text-slate-400"># => <%= recording_studio_site_category_options(:colour).inspect %></span></code></pre>
+  </section>
+
+  <%# ── Validation Helper ── %>
+  <section id="validation-helper">
+    <%= render FlatPack::PageTitle::Component.new(
+      title: "recording_studio_site_category_valid?",
+      subtitle: "Checks whether a value belongs to a registered group.",
+      variant: :h2
+    ) %>
+
+    <table class="w-full border-collapse rounded-lg border border-slate-200 text-sm">
+      <thead class="bg-slate-50">
+        <tr>
+          <th class="px-4 py-3 text-left font-medium text-slate-900">Value</th>
+          <th class="px-4 py-3 text-left font-medium text-slate-900">Valid?</th>
+          <th class="px-4 py-3 text-left font-medium text-slate-900">Usage</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-200 bg-white">
+        <% @valid_values.each do |value| %>
+          <tr>
+            <td class="px-4 py-3 align-top"><%= value %></td>
+            <td class="px-4 py-3 align-top">
+              <%= recording_studio_site_category_valid?(:colour, value) ? "✅" : "❌" %>
+            </td>
+            <td class="px-4 py-3 align-top font-mono text-xs text-slate-500">
+              recording_studio_site_category_valid?(:colour, "<%= value %>")
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </section>
+
+  <%# ── Select Helper Demo ── %>
+  <section id="select-helper">
+    <%= render FlatPack::PageTitle::Component.new(
+      title: "recording_studio_site_category_select",
+      subtitle: "Renders a FlatPack select dropdown when available, falls back to plain Rails select otherwise.",
+      variant: :h2
+    ) %>
+
+    <p class="text-sm text-slate-600">
+      This helper is used in the Pages form. See <strong>New page</strong> or <strong>Edit page</strong> to try it out.
+    </p>
+
+    <pre class="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm"><code>&lt;%= recording_studio_site_category_select(form, :colour, attribute_name: :site_colour, searchable: true) %&gt;</code></pre>
+  </section>
+</div>
