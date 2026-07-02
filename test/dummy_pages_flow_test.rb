@@ -21,12 +21,11 @@ class DummyPagesFlowTest < ActionDispatch::IntegrationTest
     @expected_root_recording = RecordingStudio.root_recording_for(Workspace.order(:name).first!)
   end
 
-  test "create records a page through recording studio and stores the selected site colour" do
+  test "create records a page through recording studio" do
     assert_difference(["Page.count", "RecordingStudio::Recording.count"], 1) do
       post pages_path, params: {
         page: {
           title: "Created Through Flow",
-          site_colour: "Blue",
           ignored: "value"
         }
       }
@@ -36,7 +35,6 @@ class DummyPagesFlowTest < ActionDispatch::IntegrationTest
     recording = RecordingStudio::Recording.find_by!(recordable: page)
 
     assert_redirected_to pages_path
-    assert_equal "Blue", page.site_colour
     assert_equal @expected_root_recording.id, recording.root_recording_id
   end
 
@@ -44,34 +42,31 @@ class DummyPagesFlowTest < ActionDispatch::IntegrationTest
     assert_no_difference("Page.count") do
       post pages_path, params: {
         page: {
-          title: "Bad Colour Page",
-          site_colour: "Green"
+          title: ""
         }
       }
     end
 
     assert_response :unprocessable_entity
-    assert_includes response.body, "is not a valid Site colours"
+    assert_includes response.body, "prevented this page from being saved"
   end
 
   test "update saves strong parameters on an existing page" do
-    page = Page.create!(title: "Editable Page", site_colour: "Red")
+    page = Page.create!(title: "Editable Page")
 
     patch page_path(page), params: {
       page: {
         title: "Updated Page",
-        site_colour: "Black",
         ignored: "value"
       }
     }
 
     assert_redirected_to pages_path
     assert_equal "Updated Page", page.reload.title
-    assert_equal "Black", page.site_colour
   end
 
   test "destroy removes an existing page" do
-    page = Page.create!(title: "Disposable Page", site_colour: "Black")
+    page = Page.create!(title: "Disposable Page")
 
     assert_difference("Page.count", -1) do
       delete page_path(page)

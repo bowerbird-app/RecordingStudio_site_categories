@@ -11,19 +11,17 @@ class RecordingStudioV3TemplateTest < ActiveSupport::TestCase
     assert_equal %w[Red Black Blue], RecordingStudioSiteCategories.values_for(:colour)
   end
 
-  test "dummy schema includes page site colour" do
-    assert ActiveRecord::Base.connection.column_exists?(:pages, :site_colour)
+  test "dummy schema includes pages table" do
+    assert ActiveRecord::Base.connection.table_exists?(:pages)
   end
 
-  test "dummy seeds keep the page recordable and category value" do
+  test "dummy seeds keep the page recordable" do
     Current.actor = nil
 
     load Rails.root.join("db/seeds.rb").to_s
 
     page = Page.find_by!(title: "Getting Started")
     page_recording = RecordingStudio::Recording.find_by!(recordable: page)
-    assert_equal "Red", page.site_colour
-    assert_equal "Site colours", RecordingStudioSiteCategories.label_for(page.site_category_group_key)
     assert_nil Current.actor
     assert_equal page, page_recording.recordable
   ensure

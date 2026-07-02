@@ -25,10 +25,7 @@ workspace = Workspace.find_or_create_by!(name: "Studio Workspace")
 accessible_workspace = Workspace.find_or_create_by!(name: "Client Workspace")
 private_workspace = Workspace.find_or_create_by!(name: "Private Workspace")
 folder = Folder.find_or_create_by!(name: "Product Docs")
-page = Page.find_or_create_by!(title: "Getting Started") do |record|
-  record.site_colour = "Red"
-end
-page.update!(site_colour: "Red") if page.site_colour.blank?
+page = Page.find_or_create_by!(title: "Getting Started")
 
 previous_actor = Current.actor
 Current.actor = user
@@ -48,4 +45,4 @@ puts "Seeded: admin@admin.com / Password"
 puts "Seeded: Workspace '#{workspace.name}' with root recording ##{root_recording.id}"
 puts "Seeded: Workspace '#{accessible_workspace.name}' with root recording ##{accessible_root_recording.id}"
 puts "Seeded: Workspace '#{private_workspace.name}' with root recording ##{private_root_recording.id}"
-puts "Seeded: Folder '#{folder.name}' and page '#{page.title}' (#{page.site_colour})"
+puts "Seeded: Folder '#{folder.name}' and page '#{page.title}'"

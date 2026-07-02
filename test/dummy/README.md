@@ -8,7 +8,7 @@ This Rails app demonstrates `recording_studio_site_categories` inside a Recordin
 - Existing RecordingStudio `Workspace`, `Folder`, and `Page` recordables
 - A boot-time `:colour` site category group
 - A mounted categories index under `/recording_studio_site_categories`
-- A simple Pages CRUD demo that assigns `site_colour` values with FlatPack inputs
+- A simple Pages CRUD demo for title-based records
 
 ## Quick Start
 
@@ -28,7 +28,7 @@ Then sign in with:
 
 - `/` - overview page for the demo
 - `/recording_studio_site_categories` - registered category groups
-- `/pages` - create, edit, and delete demo pages with site colours
+- `/pages` - create, edit, and delete demo pages
 - `/recording_studio` - mounted RecordingStudio engine entrypoint
 - `/users/sign_in` - Devise sign-in page
 - `/up` - Rails health check

@@ -1,7 +1,7 @@
 <div class="mx-auto flex w-full max-w-6xl flex-col gap-6">
   <%= render FlatPack::PageTitle::Component.new(
     title: "Pages",
-    subtitle: "Pages under #{@workspace.name} with their selected site colour and full CRUD actions.",
+    subtitle: "Pages under #{@workspace.name} with full CRUD actions.",
     variant: :h1
   ) %>
 
@@ -30,7 +30,6 @@
 
   <%= render FlatPack::Table::Component.new(data: @pages, class: "text-sm") do |table| %>
     <% table.column(title: "Title", html: ->(page) { page.title }) %>
-    <% table.column(title: "Site colour", html: ->(page) { page.site_colour.presence || "—" }) %>
     <% table.column(title: "Actions", html: ->(page) { page_actions[page.id] }) %>
   <% end %>
 </div>
