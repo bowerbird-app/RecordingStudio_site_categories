@@ -1,4 +1,6 @@
 <div class="mx-auto flex w-full max-w-5xl flex-col gap-6">
+  <%= render FlatPack::PageNav::Component.new(anchor_url: "/") %>
+
   <% if recording_studio_site_categories_flatpack_component_available?(
     "FlatPack::PageTitle::Component",
     "FlatPack::Card::Component",

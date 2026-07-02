@@ -23,6 +23,9 @@ class CategoriesPageTest < ActionDispatch::IntegrationTest
     get "/recording_studio_site_categories"
 
     assert_response :success
+    refute_includes response.body, "flat-pack-sidebar-layout"
+    assert_includes response.body, "Page navigation"
+    assert_includes response.body, "x-mark"
     assert_includes response.body, "Site categories"
     assert_includes response.body, "colour"
     assert_includes response.body, "Site colours"
