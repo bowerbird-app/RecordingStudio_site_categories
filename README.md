@@ -1,139 +1,106 @@
-# GemTemplate
+# recording_studio_site_categories
 
-Internal template for building Rails engine addons on top of RecordingStudio.
+`recording_studio_site_categories` is a small Rails engine gem that provides a site-level, in-memory category registry.
+Other gems and host apps can register category groups during boot, then use those groups for validation and optional FlatPack-backed form inputs.
 
-## What's Included
+## Why this gem exists
 
-- **RecordingStudio** gem installed and configured
-- **Devise** authentication with a pre-seeded admin user
-- **Workspace**, **Folder**, and **Page** recordables seeded into the dummy host app
-- **FlatPack** UI component library for all views
-- **Dummy app** (`test/dummy/`) with a FlatPack-based sign-in screen, a simple home page, mounted RecordingStudio routes, and FlatPack's built-in rounded theme enabled by default
+RecordingStudio addons often need shared category vocabularies such as colours, tags, or classifications that should be defined once and reused across models and views.
+This gem centralizes those groups without creating its own tables or taking a runtime dependency on `recording_studio`.
 
-The dummy app ships with a starter sidebar documentation shell for authenticated pages. The menu entries in `test/dummy/app/views/layouts/flat_pack/_sidebar.html.erb` and the linked docs pages are intended to be rewritten to suit the addon you are building; the template provides the structure and styling, not final product copy. By default, that starter shell uses FlatPack's built-in rounded theme via the root layout attribute rather than custom Tailwind theme recreation.
+## Installation
 
-## Quick Start
-
-### GitHub Codespaces (Recommended)
-
-1. Click **Code** → **Codespaces** → **Create codespace**
-2. Wait for setup to complete
-3. Run:
-   ```bash
-   cd test/dummy
-   bin/rails db:setup
-   bin/dev
-   ```
-4. Open port 3000 — you'll land on the dummy app home page and can sign in at `/users/sign_in`
-
-The dummy app is intended as a host-app validation surface for authentication, FlatPack rendering, Tailwind source scanning, and RecordingStudio route wiring.
-
-### Login Credentials
-
-| Field    | Value             |
-|----------|-------------------|
-| Email    | admin@admin.com   |
-| Password | Password          |
-
-The login form is prefilled with these credentials for fast access.
-
-### Useful Routes
-
-- `/` — dummy app home page
-- `/users/sign_in` — Devise sign-in page
-- `/recording_studio` — redirect to `/` while the mounted RecordingStudio engine remains data/API-focused
-- `/docs/install` — install guide rendered inside the dummy app
-- `/docs/config`, `/docs/recordable_types`, `/docs/recordings_tree`, `/docs/gem_views`, `/docs/methods` — starter sidebar pages to customize for your gem
-
-The home page in `test/dummy/app/views/home/index.html.erb` is also a deliberate starting point. Keep it focused on a minimal demo of the gem's primary behavior; use the sidebar pages for deeper explanations and supporting reference material.
-
-## Architecture
-
-### Root Recording Pattern
-
-This template follows RecordingStudio's root recording pattern:
-
-- **Workspace** is the top-level recordable
-- **Folder** and **Page** demonstrate nested recordables under the workspace root
-- Each configured recordable declares `recording_studio_recordable(...)`; strict declaration validation stays enabled
-- A root `RecordingStudio::Recording` wraps the Workspace
-- `Current.actor` is set from `current_user` (Devise) in `ApplicationController`
-
-### Extending RecordingStudio
-
-To add new recordable types:
-
-1. Create your model (e.g., `Page`, `Comment`)
-2. Register it in `config/initializers/recording_studio.rb`:
-   ```ruby
-   RecordingStudio.configure do |config|
-     config.recordable_types = ["Workspace", "YourNewType"]
-   end
-   ```
-3. Declare whether the model can be a root and which parents may contain it:
-   ```ruby
-   class YourNewType < ApplicationRecord
-     recording_studio_recordable label: "Your new type",
-                                 root: false,
-                                 allowed_parent_types: ["Workspace", "Folder"]
-   end
-   ```
-4. Validate declarations and create recordings under the root:
-   ```ruby
-   RecordingStudio.validate_recordable_declarations!
-   root_recording = RecordingStudio.root_recording_for(workspace)
-   root_recording.record(YourNewType) do |record|
-     record.title = "Example"
-   end
-   ```
-
-### RecordingStudio v3 Declarations
-
-RecordingStudio v3 expects every configured ActiveRecord recordable type to declare its hierarchy rules:
-
-- `Workspace` declares `root: true`
-- `Folder` and `Page` declare `root: false, allowed_parent_types: ["Workspace", "Folder"]`
-- `config.require_recordable_declarations = true` remains enabled in the dummy app initializer
-
-Useful console checks:
+Add the gem to your application:
 
 ```ruby
-RecordingStudio.validate_recordable_declarations!
-RecordingStudio.root_recordable_types
-RecordingStudio.allowed_parent_types_for("Page")
+gem "recording_studio_site_categories"
 ```
 
-### FlatPack UI Components
+Then install dependencies:
 
-All views use FlatPack ViewComponents. Available components include:
+```bash
+bundle install
+```
 
-- `FlatPack::Button::Component` — Buttons (`:primary`, `:secondary`, `:ghost`)
-- `FlatPack::Card::Component` — Cards (`:default`, `:elevated`, `:outlined`)
-- `FlatPack::Alert::Component` — Alerts (`:success`, `:error`, `:warning`, `:info`)
-- `FlatPack::Badge::Component` — Status badges
-- `FlatPack::Table::Component` — Data tables
-- `FlatPack::TextInput::Component`, `EmailInput`, `PasswordInput` — Form inputs
-- `FlatPack::Breadcrumb::Component` — Navigation breadcrumbs
-- `FlatPack::Navbar::Component` — Navigation sidebar
+FlatPack is optional. If your app includes FlatPack, the gem will render FlatPack components for its helper and mounted index page. Without FlatPack, the helper falls back to a standard Rails `<select>` and the mounted index page renders plain HTML.
 
-Use the live FlatPack demo app at [flatpack-c6p8f.ondigitalocean.app](https://flatpack-c6p8f.ondigitalocean.app/) as the approved UI reference for current shared patterns. Its component table is the fastest way to discover available FlatPack components before introducing new custom UI, and user-provided FlatPack demo URLs should be treated as task context.
+Run the install generator to create the host initializer:
 
-In GitHub Codespaces or other restricted environments, you may need to enable access to that URL before the agent can inspect the app. If access is unavailable, provide sanitized screenshots, copied markup, or component details so the agent can stay aligned with the shared UI.
+```bash
+bin/rails generate recording_studio_site_categories:install
+```
 
-See the [FlatPack README](https://github.com/bowerbird-app/flatpack) for full documentation.
+The generator creates `config/initializers/recording_studio_site_categories.rb` with a sample group registration.
 
-## Tech Stack
+## Registering groups
 
-| Component       | Version |
-|-----------------|---------|
-| Ruby            | 3.3+    |
-| Rails           | 8.1+    |
-| PostgreSQL      | 16      |
-| TailwindCSS     | 4       |
-| RecordingStudio | v3.0.0 (pinned to `recording_studio/v3.0.0` in `test/dummy/Gemfile`) |
-| FlatPack        | v0.1.84 (pinned in `test/dummy/Gemfile`) |
-| Devise          | latest  |
+Register groups in the generated initializer or from addon boot code:
 
-## Documentation
+```ruby
+RecordingStudioSiteCategories.register_group(
+  key: :colour,
+  label: "Site colours",
+  items: ["Red", "Black", "Blue"],
+  source: "HostApp"
+)
+```
 
-The original gem template documentation is preserved in `docs/gem_template/` as architectural reference material. Use it as background on the engine conventions; the README and dummy app are the source of truth for the Recording Studio addon workflow.
+Each group has:
+
+- `key` - unique machine-friendly identifier
+- `label` - display label for UI and validation copy
+- `items` - allowed values for the group
+- `source` - optional owner string used in duplicate-key errors
+
+Duplicate registrations raise immediately during boot:
+
+```ruby
+RecordingStudioSiteCategories::DuplicateGroupError
+```
+
+## Model concern
+
+Use `RecordingStudioSiteCategories::HasCategory` to validate an attribute against a registered group:
+
+```ruby
+class Page < ApplicationRecord
+  include RecordingStudioSiteCategories::HasCategory.for(:colour, attribute: :site_colour)
+end
+```
+
+The concern allows blank values, rejects values outside the registered group, and exposes `site_category_group_key` on the model instance.
+
+## View helpers
+
+The engine provides helpers for labels, values, validation checks, and select rendering:
+
+- `recording_studio_site_category_label(group_key)`
+- `recording_studio_site_category_items(group_key)`
+- `recording_studio_site_category_options(group_key)`
+- `recording_studio_site_category_valid?(group_key, value)`
+- `recording_studio_site_category_select(form, group_key, attribute_name: group_key, **system_args)`
+
+`recording_studio_site_category_select` renders the installed FlatPack select component when FlatPack is available. Otherwise it falls back to the host app's standard Rails form builder select so category-backed forms still work without an extra runtime dependency.
+
+## Runtime and schema notes
+
+- The gem has **no database tables of its own**.
+- The gem does **not** depend on `recording_studio` at runtime.
+- The dummy app continues to use RecordingStudio so the feature can be demonstrated against the existing `Page` recordable.
+
+## Dummy app demo
+
+The repository includes a dummy host app under `test/dummy` that shows:
+
+- a registered `:colour` category group
+- a mounted categories listing page
+- a Pages CRUD flow using the existing RecordingStudio `Page` recordable
+- FlatPack form inputs wired through `recording_studio_site_category_select`
+
+Run the standard checks from the repository root with:
+
+```bash
+bundle exec rake test
+```
+
+If you change dummy app boot, migrations, or assets, also validate the dummy app flow used in CI.

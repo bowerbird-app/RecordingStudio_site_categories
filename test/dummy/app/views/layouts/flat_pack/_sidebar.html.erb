@@ -1,8 +1,8 @@
 <%= render FlatPack::Sidebar::Component.new(side: sidebar_side) do |sidebar| %>
   <% sidebar.header do %>
     <%= render FlatPack::Sidebar::Header::Component.new(
-      brand_abbr: "RS",
-      title: "Addon Template",
+      brand_abbr: "SC",
+      title: "Site Categories",
       subtitle: "Recording Studio"
     ) %>
   <% end %>
@@ -10,47 +10,36 @@
   <% sidebar.items do %>
     <nav class="py-4 space-y-1" aria-label="Main navigation">
       <%= render FlatPack::Sidebar::Item::Component.new(
-        label: "Home",
-        href: main_app.root_path,
-        icon: :home
-      ) %>
-
-      <%= render FlatPack::Sidebar::Item::Component.new(
-        label: "Install",
-        href: main_app.docs_install_path,
-        icon: :arrow_down_tray
-      ) %>
-
-      <%= render FlatPack::Sidebar::Item::Component.new(
-        label: "Config",
-        href: main_app.docs_config_path,
-        icon: :settings
-      ) %>
-
-      <%= render FlatPack::Sidebar::Item::Component.new(
-        label: "Methods",
-        href: main_app.docs_methods_path,
-        icon: :code_bracket
-      ) %>
-
-      <%= render FlatPack::Sidebar::Item::Component.new(
-        label: "Recordable types",
-        href: main_app.docs_recordable_types_path,
+        label: "Categories",
+        href: recording_studio_site_categories.root_path,
         icon: :queue_list
       ) %>
 
       <%= render FlatPack::Sidebar::Item::Component.new(
-        label: "Recordings tree",
-        href: main_app.docs_recordings_tree_path,
-        icon: :folder
+        label: "Pages",
+        href: main_app.pages_path,
+        icon: :document_text
+      ) %>
+
+      <%= render FlatPack::Sidebar::SectionTitle::Component.new(label: "Helpers") %>
+
+      <%= render FlatPack::Sidebar::Item::Component.new(
+        label: "Installation",
+        href: main_app.install_path,
+        icon: :arrow_down_tray
       ) %>
 
       <%= render FlatPack::Sidebar::Item::Component.new(
-        label: "Gem Views",
-        href: main_app.docs_gem_views_path,
-        icon: :eye
+        label: "Configuration",
+        href: main_app.config_path,
+        icon: :cog_6_tooth
       ) %>
 
+        <%= render FlatPack::Sidebar::Item::Component.new(
+          label: "Helpers",
+        href: main_app.helpers_path,
+        icon: :code_bracket
+      ) %>
     </nav>
   <% end %>
 

@@ -1,0 +1,9 @@
+<div class="mx-auto flex w-full max-w-3xl flex-col gap-6">
+  <%= render FlatPack::PageTitle::Component.new(
+    title: "New page",
+    subtitle: "Create a RecordingStudio page and assign a site colour.",
+    variant: :h1
+  ) %>
+
+  <%= render "form", page: @page %>
+</div>

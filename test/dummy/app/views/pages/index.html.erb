@@ -1,0 +1,35 @@
+<div class="mx-auto flex w-full max-w-6xl flex-col gap-6">
+  <%= render FlatPack::PageTitle::Component.new(
+    title: "Pages",
+    subtitle: "Pages under #{@workspace.name} with full CRUD actions.",
+    variant: :h1
+  ) %>
+
+  <div class="flex justify-end">
+    <%= link_to new_page_path, class: "inline-flex" do %>
+      <%= render FlatPack::Button::Component.new(text: "New page", style: :primary) %>
+    <% end %>
+  </div>
+
+  <%
+    page_actions = @pages.each_with_object({}) do |page, hash|
+      hash[page.id] = capture do
+  %>
+        <div class="flex flex-wrap gap-2">
+          <%= link_to edit_page_path(page), class: "inline-flex" do %>
+            <%= render FlatPack::Button::Component.new(text: "Edit", style: :secondary) %>
+          <% end %>
+          <%= link_to page_path(page), class: "inline-flex", data: { turbo_method: :delete, turbo_confirm: "Delete #{page.title}?" } do %>
+            <%= render FlatPack::Button::Component.new(text: "Delete", style: :secondary) %>
+          <% end %>
+        </div>
+  <%
+      end
+    end
+  %>
+
+  <%= render FlatPack::Table::Component.new(data: @pages, class: "text-sm") do |table| %>
+    <% table.column(title: "Title", html: ->(page) { page.title }) %>
+    <% table.column(title: "Actions", html: ->(page) { page_actions[page.id] }) %>
+  <% end %>
+</div>

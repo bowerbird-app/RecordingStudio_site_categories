@@ -1,0 +1,106 @@
+<div class="mx-auto flex w-full max-w-4xl flex-col gap-8">
+  <%= render FlatPack::PageTitle::Component.new(
+    title: "Configuration",
+    subtitle: "How to register and manage site category groups.",
+    variant: :h1
+  ) %>
+
+  <section>
+    <%= render FlatPack::PageTitle::Component.new(
+      title: "Registered groups",
+      subtitle: "All groups registered in the current app via the initializer.",
+      variant: :h2
+    ) %>
+
+    <%= render FlatPack::Table::Component.new(data: @groups, class: "text-sm") do |table| %>
+      <% table.column(title: "Key", html: ->(group) { group.key.to_s }) %>
+      <% table.column(title: "Label", html: ->(group) { group.label }) %>
+      <% table.column(title: "Items", html: ->(group) { group.items.join(", ") }) %>
+      <% table.column(title: "Source", html: ->(group) { group.source || "—" }) %>
+    <% end %>
+  </section>
+
+  <section>
+    <%= render FlatPack::PageTitle::Component.new(
+      title: "Adding a new category group",
+      subtitle: "Register groups in the initializer or from addon boot code.",
+      variant: :h2
+    ) %>
+
+    <%= render FlatPack::CodeBlock::Component.new(
+      code: "# config/initializers/recording_studio_site_categories.rb\nRecordingStudioSiteCategories.register_group(\n  key: :colour,\n  label: \"Site colours\",\n  items: [\"Red\", \"Black\", \"Blue\"],\n  source: \"HostApp\"\n)",
+      language: "ruby"
+    ) %>
+  </section>
+
+  <section>
+    <%= render FlatPack::PageTitle::Component.new(
+      title: "Group attributes",
+      variant: :h2
+    ) %>
+
+    <table class="w-full border-collapse rounded-lg border border-slate-200 text-sm">
+      <thead class="bg-slate-50">
+        <tr>
+          <th class="px-4 py-3 text-left font-medium text-slate-900">Attribute</th>
+          <th class="px-4 py-3 text-left font-medium text-slate-900">Required</th>
+          <th class="px-4 py-3 text-left font-medium text-slate-900">Description</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-200 bg-white">
+        <tr>
+          <td class="px-4 py-3 align-top font-mono text-xs">key</td>
+          <td class="px-4 py-3 align-top">✅</td>
+          <td class="px-4 py-3 align-top">Unique machine-friendly identifier (e.g. <code>:colour</code>)</td>
+        </tr>
+        <tr>
+          <td class="px-4 py-3 align-top font-mono text-xs">label</td>
+          <td class="px-4 py-3 align-top">✅</td>
+          <td class="px-4 py-3 align-top">Display label for UI and validation messages</td>
+        </tr>
+        <tr>
+          <td class="px-4 py-3 align-top font-mono text-xs">items</td>
+          <td class="px-4 py-3 align-top">✅</td>
+          <td class="px-4 py-3 align-top">Array of allowed values for the group</td>
+        </tr>
+        <tr>
+          <td class="px-4 py-3 align-top font-mono text-xs">source</td>
+          <td class="px-4 py-3 align-top">❌</td>
+          <td class="px-4 py-3 align-top">Optional owner string used in duplicate-key errors</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <%= render FlatPack::PageTitle::Component.new(
+      title: "Duplicate groups",
+      subtitle: "Duplicate keys are caught at boot to prevent accidental overwrites.",
+      variant: :h2
+    ) %>
+
+    <p class="text-sm text-slate-600">
+      Attempting to register the same key twice raises:
+    </p>
+
+    <%= render FlatPack::CodeBlock::Component.new(
+      code: "RecordingStudioSiteCategories::DuplicateGroupError:\n  Site category group :colour is already registered by \"HostApp\"",
+      language: "text"
+    ) %>
+  </section>
+
+  <section>
+    <%= render FlatPack::PageTitle::Component.new(
+      title: "Initializer location",
+      subtitle: "Where to see the current configuration.",
+      variant: :h2
+    ) %>
+
+    <p class="text-sm text-slate-600">
+      The active configuration lives in
+      <code class="rounded bg-slate-100 px-1 py-0.5 text-xs">config/initializers/recording_studio_site_categories.rb</code>.
+      Addon gems can also register groups from their own boot code, and those will appear here alongside
+      the host app's groups.
+    </p>
+  </section>
+</div>

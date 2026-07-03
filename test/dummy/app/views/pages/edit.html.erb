@@ -1,0 +1,9 @@
+<div class="mx-auto flex w-full max-w-3xl flex-col gap-6">
+  <%= render FlatPack::PageTitle::Component.new(
+    title: "Edit page",
+    subtitle: "Update the page title or selected site colour.",
+    variant: :h1
+  ) %>
+
+  <%= render "form", page: @page %>
+</div>
