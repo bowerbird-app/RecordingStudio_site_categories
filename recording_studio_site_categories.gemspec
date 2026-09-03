@@ -8,7 +8,9 @@ Gem::Specification.new do |spec|
   spec.authors     = ["Bowerbird"]
   spec.homepage    = "https://github.com/bowerbird-app/RecordingStudio_site_categories"
   spec.summary     = "Site-level category registry for Rails engines"
-  spec.description = "Provides an in-memory registry for site category groups, model validation concerns, and FlatPack helpers without a runtime RecordingStudio dependency."
+  spec.description = "Provides an in-memory registry for site category groups, " \
+                     "model validation concerns, and FlatPack helpers without a " \
+                     "runtime RecordingStudio dependency."
   spec.license     = "MIT"
   spec.required_ruby_version = ">= 3.3.0"
 

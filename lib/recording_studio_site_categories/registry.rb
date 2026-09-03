@@ -9,24 +9,7 @@ module RecordingStudioSiteCategories
 
     def register(key:, label:, items:, source: nil)
       normalized = key.to_s.downcase.to_sym
-
-      @mutex.synchronize do
-        if @groups.key?(normalized)
-          existing = @groups[normalized]
-          owner = existing.source || "unknown"
-          raise DuplicateGroupError,
-                "Site category group :#{normalized} is already registered by #{owner.inspect}"
-        end
-
-        @groups = @groups.merge(
-          normalized => Group.new(
-            key: normalized,
-            label: label,
-            items: items,
-            source: source
-          )
-        ).freeze
-      end
+      @mutex.synchronize { store!(normalized, label, items, source) }
     end
 
     def group(key)
@@ -55,6 +38,22 @@ module RecordingStudioSiteCategories
       @mutex.synchronize do
         @groups = {}.freeze
       end
+    end
+
+    private
+
+    def store!(normalized, label, items, source)
+      raise_duplicate!(normalized)
+      group = Group.new(key: normalized, label: label, items: items, source: source)
+      @groups = @groups.merge(normalized => group).freeze
+    end
+
+    def raise_duplicate!(normalized)
+      return unless @groups.key?(normalized)
+
+      owner = @groups[normalized].source || "unknown"
+      raise DuplicateGroupError,
+            "Site category group :#{normalized} is already registered by #{owner.inspect}"
     end
   end
 end
