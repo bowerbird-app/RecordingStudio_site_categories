@@ -32,24 +32,9 @@ class CategoriesIndexViewTest < Minitest::Test
     previous_flat_pack = Object.const_get(:FlatPack) if Object.const_defined?(:FlatPack, false)
     Object.send(:remove_const, :FlatPack) if previous_flat_pack
 
-    stub_page_nav_component
     yield
   ensure
     Object.send(:remove_const, :FlatPack) if Object.const_defined?(:FlatPack, false)
     Object.const_set(:FlatPack, previous_flat_pack) if previous_flat_pack
-  end
-
-  def stub_page_nav_component
-    page_nav = Module.new
-    page_nav.const_set(:Component, Class.new do
-      def initialize(**_); end
-
-      def render_in(_view_context)
-        ""
-      end
-    end)
-    flat_pack = Module.new
-    flat_pack.const_set(:PageNav, page_nav)
-    Object.const_set(:FlatPack, flat_pack)
   end
 end

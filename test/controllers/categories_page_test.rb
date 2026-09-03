@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
-require_relative "../dummy/test/test_helper"
+ENV["RAILS_ENV"] = "test"
+require_relative "../test_helper"
+require_relative "../dummy/config/environment"
+
 require "devise/test/integration_helpers"
+require "rails/test_help"
 
 class CategoriesPageTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
