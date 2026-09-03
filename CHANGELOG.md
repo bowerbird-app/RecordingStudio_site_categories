@@ -7,14 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-09-04
+
+Cloud Agent Builds for this gem now match Billing 0.9.13. The category
+registry, helpers, and dummy demo are unchanged.
+
+### Added
+- `.cursor/fetch-skills.sh`, `.cursor/install.sh`, `.cursor/start.sh`, and
+  `.cursor/environment.json` for Cloud Agent boot. Install skips apt,
+  ruby-build, db:prepare, and tailwind when Ruby, bundle, and Postgres are
+  already usable. A skippable provision failure does not fail the Build.
+  Fetch-skills always runs last. Start only brings PostgreSQL up.
+
 ### Fixed
 - RuboCop offenses that kept `main` CI red.
 - Dummy `root` now points at `home#index` so `root_path` exists.
 
-## [0.1.1] - 2026-04-28
-
 ### Changed
-- Bumped the dummy app FlatPack dependency from `0.1.2` to `0.1.33` and pinned it by tag in `test/dummy/Gemfile`
+- Bumped the dummy app FlatPack dependency from `0.1.2` to `0.1.33` and
+  pinned it by tag in `test/dummy/Gemfile`
+
+### Upgrade notes
+- No host or schema changes. Rebuild the Cloud Agent environment with Draft
+  off so Build loads the pack.
 
 ## [0.1.0] - 2025-12-04
 

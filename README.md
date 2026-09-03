@@ -22,6 +22,15 @@ Then install dependencies:
 bundle install
 ```
 
+### Upgrading to 0.1.1
+
+Cloud Agent boot files now live in this repo. The category registry, helpers,
+and dummy demo are unchanged. No host or schema changes.
+
+1. Install Site Categories `0.1.1`. No new migration.
+2. Rebuild the Cloud Agent environment with Draft off so Build fetches the
+   skill pack.
+
 FlatPack is optional. If your app includes FlatPack, the gem will render FlatPack components for its helper and mounted index page. Without FlatPack, the helper falls back to a standard Rails `<select>` and the mounted index page renders plain HTML.
 
 Run the install generator to create the host initializer:
@@ -104,3 +113,12 @@ bundle exec rake test
 ```
 
 If you change dummy app boot, migrations, or assets, also validate the dummy app flow used in CI.
+
+## Cloud Agent boot
+
+Cloud Agent Builds run `.cursor/install.sh`, then `.cursor/fetch-skills.sh`.
+The install hook provisions a cold image. On a warm snapshot it skips apt,
+ruby-build, db:prepare, and tailwind when Ruby, bundle, and Postgres are
+already usable. Fetch-skills always runs last. `.cursor/start.sh` starts
+PostgreSQL on each boot. Rebuild with Draft off to load a new pack. See
+[Cursor skills in Cloud Agents](docs/cursor-skills.md).
