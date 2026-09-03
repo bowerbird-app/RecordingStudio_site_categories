@@ -1,6 +1,6 @@
 > **Architecture Documentation**
 > *   **Canonical Source:** [bowerbird-app/gem_template](https://github.com/bowerbird-app/gem_template/tree/main/docs/gem_template)
-> *   **Last Updated:** September 3, 2026
+> *   **Last Updated:** May 5, 2026
 >
 > *Maintainers: Please update the date above when modifying this file.*
 
@@ -23,8 +23,6 @@ This document covers how the devcontainer is configured and how to work in GitHu
    ```
 4. **Open the app** – click the forwarded port 3000 in the "Ports" tab.
 5. **Start from the dummy app home page** at `/` and use `/users/sign_in` or `/docs/install` as needed.
-
-Cloud Agents do not use this Codespaces container. They run `.cursor/install.sh` and `.cursor/start.sh` from [`.cursor/environment.json`](../../.cursor/environment.json). Skills and plugin rules are fetched at Build time. See [Cursor skills in Cloud Agents](../cursor-skills.md).
 
 ---
 
@@ -163,7 +161,6 @@ If you change `.devcontainer/` files:
 | `.devcontainer/Dockerfile` | Ruby container build |
 | `test/dummy/Procfile.dev` | Foreman process definitions |
 | `test/dummy/bin/dev` | Development startup script |
-| `.cursor/environment.json` | Cloud Agent Build hooks (see [Cursor skills](../cursor-skills.md)) |
 
 ---
 
