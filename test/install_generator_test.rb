@@ -28,8 +28,8 @@ class InstallGeneratorTest < Minitest::Test
 
       initializer = File.read(initializer_path)
       assert_includes initializer, "RecordingStudioSiteCategories.register_group("
-      assert_includes initializer, '  key: :colour,'
-      assert_includes initializer, '  source: "HostApp"'
+      assert_includes initializer, "  key: :colour,"
+      assert_includes initializer, "  source: \"HostApp\""
       refute_match(/^#\s*RecordingStudioSiteCategories\.register_group/, initializer)
     end
   end
@@ -42,7 +42,8 @@ class InstallGeneratorTest < Minitest::Test
       generator.show_post_install_message
     end
 
-    assert_includes messages, "Registered categories belong in config/initializers/recording_studio_site_categories.rb or addon boot code."
+    assert_includes messages, "Registered categories belong in config/initializers/" \
+                              "recording_studio_site_categories.rb or addon boot code."
     assert_includes messages, "Duplicate group keys raise immediately during boot."
     assert_includes messages, "recording_studio_site_categories does not create any database tables."
   end

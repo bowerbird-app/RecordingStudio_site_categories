@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "test_helper"
-require "ostruct"
 
 class ViewHelperTest < Minitest::Test
   HelperHost = Class.new do
@@ -14,6 +13,19 @@ class ViewHelperTest < Minitest::Test
     def render(component)
       @last_component = component
       "rendered-select"
+    end
+  end
+
+  FallbackForm = Struct.new(:object_name, :object) do
+    attr_reader :select_arguments
+
+    def label(attribute_name, text)
+      %(<label for="#{attribute_name}">#{text}</label>).html_safe
+    end
+
+    def select(attribute_name, options, select_options = {}, html_options = {})
+      @select_arguments = [attribute_name, options, select_options, html_options]
+      %(<select name="#{object_name}[#{attribute_name}]"></select>).html_safe
     end
   end
 
@@ -42,10 +54,12 @@ class ViewHelperTest < Minitest::Test
 
   def test_select_builds_flatpack_component_from_form_object
     page = Struct.new(:site_colour, :errors).new("Black", { site_colour: ["is invalid"] })
-    form = OpenStruct.new(object_name: "page", object: page)
+    form = Struct.new(:object_name, :object).new("page", page)
 
     result = with_stubbed_flatpack_select_component do |component_class|
-      rendered = @helper.recording_studio_site_category_select(form, :colour, attribute_name: :site_colour, searchable: true)
+      rendered = @helper.recording_studio_site_category_select(
+        form, :colour, attribute_name: :site_colour, searchable: true
+      )
 
       component = @helper.last_component
       assert_instance_of component_class, component
@@ -65,7 +79,7 @@ class ViewHelperTest < Minitest::Test
 
   def test_select_falls_back_to_standard_form_builder_when_flatpack_is_absent
     page = Struct.new(:site_colour, :errors).new("Black", { site_colour: ["is invalid"] })
-    form = FallbackForm.new(object_name: "page", object: page)
+    form = FallbackForm.new("page", page)
 
     result = without_flatpack do
       @helper.recording_studio_site_category_select(
@@ -94,32 +108,21 @@ class ViewHelperTest < Minitest::Test
 
   private
 
-  FallbackForm = Struct.new(:object_name, :object) do
-    attr_reader :select_arguments
-
-    def label(attribute_name, text)
-      %(<label for="#{attribute_name}">#{text}</label>).html_safe
-    end
-
-    def select(attribute_name, options, select_options = {}, html_options = {})
-      @select_arguments = [attribute_name, options, select_options, html_options]
-      %(<select name="#{object_name}[#{attribute_name}]"></select>).html_safe
-    end
-  end
-
   def with_stubbed_flatpack_select_component
     without_flatpack do
       component_class = Class.new do
         attr_reader :name, :options, :value, :label, :placeholder, :error, :system_arguments
 
-        def initialize(name:, options:, value: nil, label: nil, placeholder: nil, error: nil, **system_arguments)
-          @name = name
-          @options = options
-          @value = value
-          @label = label
-          @placeholder = placeholder
-          @error = error
-          @system_arguments = system_arguments
+        def initialize(**attrs)
+          @name = attrs[:name]
+          @options = attrs[:options]
+          @value = attrs[:value]
+          @label = attrs[:label]
+          @placeholder = attrs[:placeholder]
+          @error = attrs[:error]
+          @system_arguments = attrs.except(
+            :name, :options, :value, :label, :placeholder, :error, :multiple
+          )
         end
       end
 

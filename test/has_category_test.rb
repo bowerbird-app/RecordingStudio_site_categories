@@ -14,7 +14,7 @@ class HasCategoryTest < Minitest::Test
 
     @model_class = Class.new do
       def self.model_name
-        @_model_name ||= ActiveModel::Name.new(self, nil, "TestModel")
+        @model_name ||= ActiveModel::Name.new(self, nil, "TestModel")
       end
 
       include ActiveModel::Model
@@ -65,7 +65,7 @@ class HasCategoryTest < Minitest::Test
       include RecordingStudioSiteCategories::HasCategory.for(:colour, attribute: :site_colours, multiple: true)
     end
 
-    record = model.new(site_colours: ["Red", "Black"])
+    record = model.new(site_colours: %w[Red Black])
 
     assert record.valid?
   end
@@ -110,7 +110,7 @@ class HasCategoryTest < Minitest::Test
       include RecordingStudioSiteCategories::HasCategory.for(:colour, attribute: :site_colours, multiple: true)
     end
 
-    record = model.new(site_colours: ["Red", "Green"])
+    record = model.new(site_colours: %w[Red Green])
 
     refute record.valid?
     assert record.errors[:site_colours].first.include?("Green")
@@ -126,7 +126,7 @@ class HasCategoryTest < Minitest::Test
       include RecordingStudioSiteCategories::HasCategory.for(:colour, attribute: :site_colours, multiple: true)
     end
 
-    record = model.new(site_colours: ["Green", "Yellow"])
+    record = model.new(site_colours: %w[Green Yellow])
 
     refute record.valid?
     assert record.errors[:site_colours].first.include?("Green")

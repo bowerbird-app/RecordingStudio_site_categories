@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- RuboCop offenses that kept `main` CI red.
+- Dummy `root` now points at `home#index` so `root_path` exists.
+
 ## [0.1.1] - 2026-04-28
 
 ### Changed

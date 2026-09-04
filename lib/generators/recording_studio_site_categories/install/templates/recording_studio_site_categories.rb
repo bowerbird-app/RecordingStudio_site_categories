@@ -4,6 +4,6 @@
 RecordingStudioSiteCategories.register_group(
   key: :colour,
   label: "Site colours",
-  items: ["Red", "Black", "Blue"],
+  items: %w[Red Black Blue],
   source: "HostApp"
 )

@@ -14,7 +14,8 @@ module RecordingStudioSiteCategories
       end
 
       def show_post_install_message
-        say "Registered categories belong in config/initializers/recording_studio_site_categories.rb or addon boot code.", :green
+        say "Registered categories belong in config/initializers/" \
+            "recording_studio_site_categories.rb or addon boot code.", :green
         say "Duplicate group keys raise immediately during boot.", :green
         say "recording_studio_site_categories does not create any database tables.", :green
       end
