@@ -22,6 +22,15 @@ Then install dependencies:
 bundle install
 ```
 
+### Upgrading to 0.2.0
+
+Static interface copy on the gem's own categories index and blank layout now
+uses Rails I18n keys under `recording_studio.site_categories` (English only in
+`config/locales/en.yml`). Rendered English text is unchanged. No migration or
+host code change is required. Override or add languages in the host's
+`config/locales`. This gem does not depend on
+`recording_studio_internationalization`.
+
 ### Upgrading to 0.1.1
 
 Cloud Agent boot files now live in this repo. The category registry, helpers,
@@ -90,6 +99,14 @@ The engine provides helpers for labels, values, validation checks, and select re
 - `recording_studio_site_category_select(form, group_key, attribute_name: group_key, **system_args)`
 
 `recording_studio_site_category_select` renders the installed FlatPack select component when FlatPack is available. Otherwise it falls back to the host app's standard Rails form builder select so category-backed forms still work without an extra runtime dependency.
+
+## Interface text
+
+The mounted categories index and blank layout ship English Rails I18n keys under
+`recording_studio.site_categories` in `config/locales/en.yml`. Hosts can
+override those keys or add other languages in their own locale files. The gem
+does not declare host languages and does not depend on
+`recording_studio_internationalization`.
 
 ## Runtime and schema notes
 

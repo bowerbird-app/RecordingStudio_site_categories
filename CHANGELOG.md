@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-09
+
+### Added
+
+* English Rails I18n keys for static interface copy in the gem's own categories
+  index and blank layout (`config/locales/en.yml` under
+  `recording_studio.site_categories`)
+
+### Changed
+
+* Categories index title, subtitle, and column headers, plus the blank layout
+  application name, resolve through `t(...)` (English output unchanged)
+
+### Upgrade notes
+
+- No migration or host code change is required for English.
+- To translate or override the defaults, add keys under
+  `recording_studio.site_categories` in the host's locale files.
+- There is no dependency on `recording_studio_internationalization`.
+
 ## [0.1.1] - 2026-09-04
 
 Cloud Agent Builds for this gem now match Billing 0.9.13. The category
@@ -44,6 +64,7 @@ registry, helpers, and dummy demo are unchanged.
 - Comprehensive README and documentation
 - Basic test suite with Minitest
 
-[Unreleased]: https://github.com/bowerbird-app/RecordingStudio_site_categories/compare/v0.1.1...HEAD
+[Unreleased]: https://github.com/bowerbird-app/RecordingStudio_site_categories/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/bowerbird-app/RecordingStudio_site_categories/releases/tag/v0.2.0
 [0.1.1]: https://github.com/bowerbird-app/RecordingStudio_site_categories/releases/tag/v0.1.1
 [0.1.0]: https://github.com/bowerbird-app/RecordingStudio_site_categories/releases/tag/v0.1.0

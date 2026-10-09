@@ -23,8 +23,14 @@ class CategoriesPageTest < ActionDispatch::IntegrationTest
     assert_includes response.body, "Page navigation"
     assert_includes response.body, "x-mark"
     assert_includes response.body, "Site categories"
+    assert_includes response.body, "Category groups registered at boot for the current host app."
+    assert_includes response.body, "Key"
+    assert_includes response.body, "Label"
+    assert_includes response.body, "Items"
+    assert_includes response.body, "RecordingStudio Site Categories"
     assert_includes response.body, "colour"
     assert_includes response.body, "Site colours"
     assert_includes response.body, "Red, Black, Blue"
+    refute_includes response.body, "translation missing"
   end
 end

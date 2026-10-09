@@ -7,29 +7,29 @@
     "FlatPack::Table::Component"
   ) %>
     <%= render FlatPack::PageTitle::Component.new(
-      title: "Site categories",
-      subtitle: "Category groups registered at boot for the current host app.",
+      title: t("recording_studio.site_categories.index.title"),
+      subtitle: t("recording_studio.site_categories.index.subtitle"),
       variant: :h1
     ) %>
 
     <%= render FlatPack::Table::Component.new(data: @groups, class: "text-sm") do |table| %>
-      <% table.column(title: "Key", html: ->(group) { group.key.to_s }) %>
-      <% table.column(title: "Label", html: ->(group) { group.label }) %>
-      <% table.column(title: "Items", html: ->(group) { group.items.join(", ") }) %>
+      <% table.column(title: t("recording_studio.site_categories.index.columns.key"), html: ->(group) { group.key.to_s }) %>
+      <% table.column(title: t("recording_studio.site_categories.index.columns.label"), html: ->(group) { group.label }) %>
+      <% table.column(title: t("recording_studio.site_categories.index.columns.items"), html: ->(group) { group.items.join(", ") }) %>
     <% end %>
   <% else %>
     <div class="space-y-2">
-      <h1 class="text-2xl font-semibold">Site categories</h1>
-      <p class="text-sm text-slate-600">Category groups registered at boot for the current host app.</p>
+      <h1 class="text-2xl font-semibold"><%= t("recording_studio.site_categories.index.title") %></h1>
+      <p class="text-sm text-slate-600"><%= t("recording_studio.site_categories.index.subtitle") %></p>
     </div>
 
     <div class="overflow-x-auto rounded-lg border border-slate-200 bg-white">
       <table class="min-w-full divide-y divide-slate-200 text-left text-sm">
         <thead class="bg-slate-50">
           <tr>
-            <th scope="col" class="px-4 py-3 font-medium text-slate-900">Key</th>
-            <th scope="col" class="px-4 py-3 font-medium text-slate-900">Label</th>
-            <th scope="col" class="px-4 py-3 font-medium text-slate-900">Items</th>
+            <th scope="col" class="px-4 py-3 font-medium text-slate-900"><%= t("recording_studio.site_categories.index.columns.key") %></th>
+            <th scope="col" class="px-4 py-3 font-medium text-slate-900"><%= t("recording_studio.site_categories.index.columns.label") %></th>
+            <th scope="col" class="px-4 py-3 font-medium text-slate-900"><%= t("recording_studio.site_categories.index.columns.items") %></th>
           </tr>
         </thead>
         <tbody class="divide-y divide-slate-200 bg-white">
