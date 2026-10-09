@@ -21,9 +21,13 @@ class CategoriesIndexViewTest < Minitest::Test
 
     assert_includes html, "Site categories"
     assert_includes html, "Category groups registered at boot for the current host app."
+    assert_includes html, "Key"
+    assert_includes html, "Label"
+    assert_includes html, "Items"
     assert_includes html, "<table"
     assert_includes html, "<th scope=\"col\""
     assert_includes html, "Red, Black, Blue"
+    refute_includes html, "translation missing"
   end
 
   private

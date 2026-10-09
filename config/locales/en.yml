@@ -1,0 +1,12 @@
+en:
+  recording_studio:
+    site_categories:
+      index:
+        title: "Site categories"
+        subtitle: "Category groups registered at boot for the current host app."
+        columns:
+          key: "Key"
+          label: "Label"
+          items: "Items"
+      layout:
+        application_name: "RecordingStudio Site Categories"
