@@ -37,9 +37,9 @@ module RecordingStudioSiteCategories
     end
 
     def self.validate_inclusion_value(record, group_key, attribute)
-      value = record.public_send(attribute)
+      value = record.read_attribute_for_validation(attribute)
       return if value.blank?
-      return if RecordingStudioSiteCategories.values_for(group_key).include?(value)
+      return if inclusion_member?(group_key, value)
 
       label = RecordingStudioSiteCategories.label_for(group_key)
       record.errors.add(
@@ -48,6 +48,13 @@ module RecordingStudioSiteCategories
         message: not_a_valid_message(label),
         value: value
       )
+    end
+
+    def self.inclusion_member?(group_key, value)
+      members = RecordingStudioSiteCategories.values_for(group_key)
+      return value.all? { |member| members.include?(member) } if value.is_a?(Array)
+
+      members.include?(value)
     end
 
     def self.validate_array_values(record, group_key, attribute)

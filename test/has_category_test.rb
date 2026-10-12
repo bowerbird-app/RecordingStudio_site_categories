@@ -66,6 +66,21 @@ class HasCategoryTest < Minitest::Test
     assert record.errors.added?(:site_colour, :inclusion, value: "Green")
   end
 
+  def test_inclusion_allows_array_when_every_element_is_a_member
+    record = @model_class.new(site_colour: ["Red"])
+
+    assert record.valid?
+  end
+
+  def test_inclusion_rejects_array_when_any_element_is_not_a_member
+    value = %w[Red Green]
+    record = @model_class.new(site_colour: value)
+
+    refute record.valid?
+    assert_equal [{ error: :inclusion, value: value }], record.errors.details[:site_colour]
+    assert record.errors.of_kind?(:site_colour, :inclusion)
+  end
+
   def test_inclusion_error_uses_english_default_in_non_english_locale
     with_isolated_i18n_backend do
       I18n.available_locales = %i[en fr]
