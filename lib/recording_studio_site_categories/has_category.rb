@@ -39,12 +39,15 @@ module RecordingStudioSiteCategories
     def self.validate_inclusion_value(record, group_key, attribute)
       value = record.public_send(attribute)
       return if value.blank?
-
-      allowed = RecordingStudioSiteCategories.values_for(group_key)
-      return if allowed.include?(value.to_s)
+      return if RecordingStudioSiteCategories.values_for(group_key).include?(value)
 
       label = RecordingStudioSiteCategories.label_for(group_key)
-      record.errors.add(attribute, not_a_valid_message(label))
+      record.errors.add(
+        attribute,
+        :inclusion,
+        message: not_a_valid_message(label),
+        value: value
+      )
     end
 
     def self.validate_array_values(record, group_key, attribute)
@@ -55,7 +58,8 @@ module RecordingStudioSiteCategories
       invalid = values.reject { |value| allowed.include?(value.to_s) }
       return if invalid.empty?
 
-      record.errors.add(attribute, contains_invalid_values_message(invalid))
+      message = contains_invalid_values_message(invalid)
+      record.errors.add(attribute, message)
     end
 
     def self.not_a_valid_message(label)

@@ -96,6 +96,55 @@ class SiteCategoriesI18nTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "host locale fixture overrides HasCategory validation messages on real validation" do
+    begin
+      I18n.load_path << HOST_OVERRIDE_LOCALE
+      I18n.reload!
+
+      single_model = Class.new do
+        def self.model_name
+          @model_name ||= ActiveModel::Name.new(self, nil, "HostOverrideColour")
+        end
+
+        include ActiveModel::Model
+        include ActiveModel::Validations
+        attr_accessor :site_colour
+
+        include RecordingStudioSiteCategories::HasCategory.for(:colour, attribute: :site_colour)
+      end
+
+      multiple_model = Class.new do
+        def self.model_name
+          @model_name ||= ActiveModel::Name.new(self, nil, "HostOverrideColours")
+        end
+
+        include ActiveModel::Model
+        include ActiveModel::Validations
+        attr_accessor :site_colours
+
+        include RecordingStudioSiteCategories::HasCategory.for(
+          :colour, attribute: :site_colours, multiple: true
+        )
+      end
+
+      single = single_model.new(site_colour: "Green")
+      refute single.valid?
+      assert_includes single.errors[:site_colour], "HOST is not a valid Site colours"
+      assert single.errors.of_kind?(:site_colour, :inclusion)
+
+      multiple = multiple_model.new(site_colours: %w[Green Yellow])
+      refute multiple.valid?
+      assert_equal(
+        "HOST contains invalid values: Green, Yellow",
+        multiple.errors[:site_colours].first
+      )
+    ensure
+      I18n.load_path = @original_load_path.dup
+      I18n.reload!
+      assert_equal @original_load_path, I18n.load_path
+    end
+  end
+
   test "without the test-only host override gem English still renders" do
     get "/recording_studio_site_categories"
 

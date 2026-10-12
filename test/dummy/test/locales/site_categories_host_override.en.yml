@@ -8,3 +8,6 @@ en:
         placeholder: "HOST Select %{label}"
       layout:
         application_name: "HOST RecordingStudio Site Categories"
+      errors:
+        not_a_valid: "HOST is not a valid %{label}"
+        contains_invalid_values: "HOST contains invalid values: %{values}"

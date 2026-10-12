@@ -49,6 +49,23 @@ class HasCategoryTest < Minitest::Test
     assert_includes record.errors[:site_colour], "is not a valid Site colours"
   end
 
+  def test_rejects_symbol_values_that_are_not_exact_members
+    record = @model_class.new(site_colour: :Red)
+
+    refute record.valid?
+    assert_includes record.errors[:site_colour], "is not a valid Site colours"
+    assert record.errors.of_kind?(:site_colour, :inclusion)
+  end
+
+  def test_inclusion_error_keeps_inclusion_type_and_value
+    record = @model_class.new(site_colour: "Green")
+
+    refute record.valid?
+    assert_includes record.errors.details[:site_colour], { error: :inclusion, value: "Green" }
+    assert record.errors.of_kind?(:site_colour, :inclusion)
+    assert record.errors.added?(:site_colour, :inclusion, value: "Green")
+  end
+
   def test_inclusion_error_uses_english_default_in_non_english_locale
     with_isolated_i18n_backend do
       I18n.available_locales = %i[en fr]
@@ -151,6 +168,25 @@ class HasCategoryTest < Minitest::Test
 
     refute record.valid?
     assert_equal "contains invalid values: Green", record.errors[:site_colours].first
+  end
+
+  def test_multiple_error_keeps_string_type_from_main
+    model = Class.new do
+      include ActiveModel::Model
+      include ActiveModel::Validations
+
+      attr_accessor :site_colours
+
+      include RecordingStudioSiteCategories::HasCategory.for(:colour, attribute: :site_colours, multiple: true)
+    end
+
+    record = model.new(site_colours: %w[Red Green])
+    message = "contains invalid values: Green"
+
+    refute record.valid?
+    assert_includes record.errors.details[:site_colours], { error: message }
+    assert record.errors.of_kind?(:site_colours, message)
+    assert record.errors.added?(:site_colours, message)
   end
 
   def test_multiple_error_uses_english_default_in_non_english_locale

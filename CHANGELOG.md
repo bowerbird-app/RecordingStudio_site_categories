@@ -22,6 +22,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Existing view `t(...)` calls pass `default:` English so a host locale with no
   fallback never shows "translation missing"
 
+### Fixed
+
+* HasCategory single-value errors keep type `:inclusion` (with `value:`) so
+  `of_kind?` / `added?` match pre-i18n behavior; membership still rejects
+  Symbol values that are not exact list members
+
 ### Upgrade notes
 
 - No migration or host code change is required for English.

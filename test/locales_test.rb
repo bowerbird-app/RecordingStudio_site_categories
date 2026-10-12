@@ -32,6 +32,8 @@ class LocalesTest < Minitest::Test
   def setup
     @original_load_path = I18n.load_path.dup
     @original_backend = I18n.backend
+    @original_locale = I18n.locale
+    @original_available_locales = I18n.available_locales.dup
     I18n.backend = I18n::Backend::Simple.new
     load_engine_locales!
   end
@@ -39,7 +41,8 @@ class LocalesTest < Minitest::Test
   def teardown
     I18n.load_path = @original_load_path
     I18n.backend = @original_backend
-    I18n.reload!
+    I18n.locale = @original_locale
+    I18n.available_locales = @original_available_locales
   end
 
   def test_engine_ships_only_english_locale_files
