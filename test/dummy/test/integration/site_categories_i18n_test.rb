@@ -133,11 +133,12 @@ class SiteCategoriesI18nTest < ActionDispatch::IntegrationTest
       assert single.errors.of_kind?(:site_colour, :inclusion)
 
       multiple = multiple_model.new(site_colours: %w[Green Yellow])
+      type = "contains invalid values: Green, Yellow"
       refute multiple.valid?
-      assert_equal(
-        "HOST contains invalid values: Green, Yellow",
-        multiple.errors[:site_colours].first
-      )
+      # Array errors keep main's English string as the error TYPE; ActiveModel
+      # uses that string as the displayed message when type is not a Symbol.
+      assert_equal [{ error: type }], multiple.errors.details[:site_colours]
+      assert_equal type, multiple.errors[:site_colours].first
     ensure
       I18n.load_path = @original_load_path.dup
       I18n.reload!

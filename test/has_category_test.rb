@@ -196,12 +196,48 @@ class HasCategoryTest < Minitest::Test
     end
 
     record = model.new(site_colours: %w[Red Green])
-    message = "contains invalid values: Green"
+    type = "contains invalid values: Green"
 
     refute record.valid?
-    assert_includes record.errors.details[:site_colours], { error: message }
-    assert record.errors.of_kind?(:site_colours, message)
-    assert record.errors.added?(:site_colours, message)
+    assert_equal [{ error: type }], record.errors.details[:site_colours]
+    assert record.errors.of_kind?(:site_colours, type)
+    assert record.errors.added?(:site_colours, type)
+  end
+
+  def test_multiple_error_details_type_stays_english_under_non_english_locale
+    model = Class.new do
+      include ActiveModel::Model
+      include ActiveModel::Validations
+
+      attr_accessor :site_colours
+
+      include RecordingStudioSiteCategories::HasCategory.for(:colour, attribute: :site_colours, multiple: true)
+    end
+
+    with_isolated_i18n_backend do
+      I18n.available_locales = %i[en fr]
+      I18n.backend.store_translations(
+        :fr,
+        recording_studio: {
+          site_categories: {
+            errors: {
+              # rubocop:disable Style/FormatStringToken
+              contains_invalid_values: "contient des valeurs invalides: %{values}"
+              # rubocop:enable Style/FormatStringToken
+            }
+          }
+        }
+      )
+
+      I18n.with_locale(:fr) do
+        record = model.new(site_colours: %w[Green Yellow])
+        type = "contains invalid values: Green, Yellow"
+
+        refute record.valid?
+        assert_equal [{ error: type }], record.errors.details[:site_colours]
+        assert record.errors.of_kind?(:site_colours, type)
+      end
+    end
   end
 
   def test_multiple_error_uses_english_default_in_non_english_locale
