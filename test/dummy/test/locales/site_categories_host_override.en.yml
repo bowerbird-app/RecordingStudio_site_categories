@@ -1,0 +1,13 @@
+en:
+  recording_studio:
+    site_categories:
+      index:
+        title: "HOST Site categories"
+        subtitle: "HOST Category groups registered at boot for the current host app."
+      select:
+        placeholder: "HOST Select %{label}"
+      layout:
+        application_name: "HOST RecordingStudio Site Categories"
+      errors:
+        not_a_valid: "HOST is not a valid %{label}"
+        contains_invalid_values: "HOST contains invalid values: %{values}"

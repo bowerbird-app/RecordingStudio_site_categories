@@ -10,3 +10,8 @@ en:
           items: "Items"
       layout:
         application_name: "RecordingStudio Site Categories"
+      select:
+        placeholder: "Select %{label}"
+      errors:
+        not_a_valid: "is not a valid %{label}"
+        contains_invalid_values: "contains invalid values: %{values}"
