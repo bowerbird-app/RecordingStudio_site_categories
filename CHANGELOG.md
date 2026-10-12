@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-12
+
+### Added
+
+* English Rails I18n keys for select placeholders and HasCategory validation
+  messages under `recording_studio.site_categories.select` and
+  `recording_studio.site_categories.errors`
+
+### Changed
+
+* Select placeholder `Select %{label}` and HasCategory validation copy resolve
+  through `t(...)` / `I18n.t(...)` at call time (English output unchanged)
+* Existing view `t(...)` calls pass `default:` English so a host locale with no
+  fallback never shows "translation missing"
+
+### Upgrade notes
+
+- No migration or host code change is required for English.
+- To translate or override the new defaults, add keys under
+  `recording_studio.site_categories.select` and
+  `recording_studio.site_categories.errors` in the host's locale files.
+- There is no dependency on `recording_studio_internationalization`.
+
 ## [0.2.0] - 2026-10-09
 
 ### Added
@@ -64,7 +87,8 @@ registry, helpers, and dummy demo are unchanged.
 - Comprehensive README and documentation
 - Basic test suite with Minitest
 
-[Unreleased]: https://github.com/bowerbird-app/RecordingStudio_site_categories/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/bowerbird-app/RecordingStudio_site_categories/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/bowerbird-app/RecordingStudio_site_categories/releases/tag/v0.3.0
 [0.2.0]: https://github.com/bowerbird-app/RecordingStudio_site_categories/releases/tag/v0.2.0
 [0.1.1]: https://github.com/bowerbird-app/RecordingStudio_site_categories/releases/tag/v0.1.1
 [0.1.0]: https://github.com/bowerbird-app/RecordingStudio_site_categories/releases/tag/v0.1.0

@@ -106,7 +106,68 @@ class ViewHelperTest < Minitest::Test
     )
   end
 
+  def test_select_placeholder_uses_english_default_in_non_english_locale
+    page = Struct.new(:site_colour, :errors).new(nil, {})
+    form = Struct.new(:object_name, :object).new("page", page)
+
+    with_isolated_i18n_backend do
+      I18n.available_locales = %i[en fr]
+      I18n.with_locale(:fr) do
+        with_stubbed_flatpack_select_component do
+          @helper.recording_studio_site_category_select(
+            form, :colour, attribute_name: :site_colour
+          )
+
+          assert_equal "Select Site colours", @helper.last_component.placeholder
+        end
+      end
+    end
+  end
+
+  def test_select_placeholder_follows_translated_locale_string
+    page = Struct.new(:site_colour, :errors).new(nil, {})
+    form = Struct.new(:object_name, :object).new("page", page)
+
+    with_isolated_i18n_backend do
+      I18n.available_locales = %i[en fr]
+      I18n.backend.store_translations(
+        :fr,
+        recording_studio: {
+          site_categories: {
+            select: {
+              placeholder: "Choisir %{label}"
+            }
+          }
+        }
+      )
+
+      I18n.with_locale(:fr) do
+        with_stubbed_flatpack_select_component do
+          @helper.recording_studio_site_category_select(
+            form, :colour, attribute_name: :site_colour
+          )
+
+          assert_equal "Choisir Site colours", @helper.last_component.placeholder
+        end
+      end
+    end
+  end
+
   private
+
+  def with_isolated_i18n_backend
+    original_backend = I18n.backend
+    original_locale = I18n.locale
+    original_available_locales = I18n.available_locales.dup
+    I18n.backend = I18n::Backend::Simple.new
+    locale_path = File.expand_path("../config/locales/en.yml", __dir__)
+    I18n.backend.store_translations(:en, YAML.safe_load_file(locale_path, aliases: true).fetch("en"))
+    yield
+  ensure
+    I18n.backend = original_backend
+    I18n.locale = original_locale
+    I18n.available_locales = original_available_locales
+  end
 
   def with_stubbed_flatpack_select_component
     without_flatpack do

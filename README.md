@@ -22,6 +22,15 @@ Then install dependencies:
 bundle install
 ```
 
+### Upgrading to 0.3.0
+
+Select placeholders (`Select %{label}`) and HasCategory validation messages
+now resolve through Rails I18n under `recording_studio.site_categories` at
+call time (English only in `config/locales/en.yml`). Rendered English text is
+unchanged. No migration or host code change is required. Override or add
+languages in the host's `config/locales`. This gem does not depend on
+`recording_studio_internationalization`.
+
 ### Upgrading to 0.2.0
 
 Static interface copy on the gem's own categories index and blank layout now
@@ -102,10 +111,12 @@ The engine provides helpers for labels, values, validation checks, and select re
 
 ## Interface text
 
-The mounted categories index and blank layout ship English Rails I18n keys under
-`recording_studio.site_categories` in `config/locales/en.yml`. Hosts can
-override those keys or add other languages in their own locale files. The gem
-does not declare host languages and does not depend on
+The mounted categories index, blank layout, select placeholders, and HasCategory
+validation messages ship English Rails I18n keys under
+`recording_studio.site_categories` in `config/locales/en.yml`. Every lookup
+passes an English `default:` so a host locale with no fallback never shows
+"translation missing". Hosts override by defining the same keys in their own
+`config/locales`. The gem does not declare host languages and does not depend on
 `recording_studio_internationalization`.
 
 ## Runtime and schema notes

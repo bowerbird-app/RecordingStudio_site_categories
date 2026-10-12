@@ -31,10 +31,18 @@ module RecordingStudioSiteCategories
         {
           form: form, group_key: group_key, attribute_name: attribute_name, multiple: multiple,
           object: object, label: label, system_args: system_args,
-          placeholder: system_args.delete(:include_blank) || "Select #{label}",
+          placeholder: system_args.delete(:include_blank) || select_placeholder_for(label),
           error: first_attribute_error(object, attribute_name),
           name: category_select_name(form, attribute_name, multiple)
         }
+      end
+
+      def select_placeholder_for(label)
+        I18n.t(
+          "recording_studio.site_categories.select.placeholder",
+          label: label,
+          default: "Select %{label}"
+        )
       end
 
       def first_attribute_error(object, attribute_name)

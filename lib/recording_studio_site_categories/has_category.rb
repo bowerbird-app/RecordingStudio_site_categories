@@ -28,13 +28,23 @@ module RecordingStudioSiteCategories
 
     def self.define_inclusion_validation(base, group_key, attribute)
       base.class_eval do
-        validates attribute,
-                  inclusion: {
-                    in: ->(_record) { RecordingStudioSiteCategories.values_for(group_key) },
-                    allow_blank: true,
-                    message: "is not a valid #{RecordingStudioSiteCategories.label_for(group_key)}"
-                  }
+        validate :"validate_#{attribute}_inclusion"
+
+        define_method :"validate_#{attribute}_inclusion" do
+          HasCategory.validate_inclusion_value(self, group_key, attribute)
+        end
       end
+    end
+
+    def self.validate_inclusion_value(record, group_key, attribute)
+      value = record.public_send(attribute)
+      return if value.blank?
+
+      allowed = RecordingStudioSiteCategories.values_for(group_key)
+      return if allowed.include?(value.to_s)
+
+      label = RecordingStudioSiteCategories.label_for(group_key)
+      record.errors.add(attribute, not_a_valid_message(label))
     end
 
     def self.validate_array_values(record, group_key, attribute)
@@ -45,7 +55,23 @@ module RecordingStudioSiteCategories
       invalid = values.reject { |value| allowed.include?(value.to_s) }
       return if invalid.empty?
 
-      record.errors.add(attribute, "contains invalid values: #{invalid.join(', ')}")
+      record.errors.add(attribute, contains_invalid_values_message(invalid))
+    end
+
+    def self.not_a_valid_message(label)
+      I18n.t(
+        "recording_studio.site_categories.errors.not_a_valid",
+        label: label,
+        default: "is not a valid %{label}"
+      )
+    end
+
+    def self.contains_invalid_values_message(invalid)
+      I18n.t(
+        "recording_studio.site_categories.errors.contains_invalid_values",
+        values: invalid.join(", "),
+        default: "contains invalid values: %{values}"
+      )
     end
   end
 end
