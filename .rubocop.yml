@@ -13,10 +13,6 @@ Style/StringLiterals:
   Enabled: true
   EnforcedStyle: double_quotes
 
-# I18n interpolation uses %{name}; annotated %<name>s tokens are not valid there.
-Style/FormatStringToken:
-  Enabled: false
-
 Layout/LineLength:
   Max: 120
 
@@ -27,11 +23,6 @@ Metrics/ClassLength:
     - 'lib/gem_template/hooks.rb'
 
 Metrics/MethodLength:
-  Exclude:
-    - 'test/**/*'
-    - 'lib/generators/**/*'
-
-Metrics/BlockLength:
   Exclude:
     - 'test/**/*'
     - 'lib/generators/**/*'

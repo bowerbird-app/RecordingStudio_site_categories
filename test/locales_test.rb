@@ -18,6 +18,7 @@ class LocalesTest < Minitest::Test
     "application_name" => "RecordingStudio Site Categories"
   }.freeze
 
+  # rubocop:disable Style/FormatStringToken
   SELECT_KEYS = {
     "placeholder" => "Select %{label}"
   }.freeze
@@ -26,6 +27,7 @@ class LocalesTest < Minitest::Test
     "not_a_valid" => "is not a valid %{label}",
     "contains_invalid_values" => "contains invalid values: %{values}"
   }.freeze
+  # rubocop:enable Style/FormatStringToken
 
   def setup
     @original_load_path = I18n.load_path.dup
@@ -57,42 +59,8 @@ class LocalesTest < Minitest::Test
 
   def test_english_interface_keys_resolve_without_missing_translations
     I18n.with_locale(:en) do
-      assert_equal "Site categories", I18n.t("recording_studio.site_categories.index.title", raise: true)
-      assert_equal(
-        "Category groups registered at boot for the current host app.",
-        I18n.t("recording_studio.site_categories.index.subtitle", raise: true)
-      )
-      assert_equal "Key", I18n.t("recording_studio.site_categories.index.columns.key", raise: true)
-      assert_equal "Label", I18n.t("recording_studio.site_categories.index.columns.label", raise: true)
-      assert_equal "Items", I18n.t("recording_studio.site_categories.index.columns.items", raise: true)
-      assert_equal(
-        "RecordingStudio Site Categories",
-        I18n.t("recording_studio.site_categories.layout.application_name", raise: true)
-      )
-      assert_equal(
-        "Select Site colours",
-        I18n.t(
-          "recording_studio.site_categories.select.placeholder",
-          label: "Site colours",
-          raise: true
-        )
-      )
-      assert_equal(
-        "is not a valid Site colours",
-        I18n.t(
-          "recording_studio.site_categories.errors.not_a_valid",
-          label: "Site colours",
-          raise: true
-        )
-      )
-      assert_equal(
-        "contains invalid values: Green, Yellow",
-        I18n.t(
-          "recording_studio.site_categories.errors.contains_invalid_values",
-          values: "Green, Yellow",
-          raise: true
-        )
-      )
+      assert_english_index_and_layout_keys
+      assert_english_select_and_error_keys
     end
   end
 
@@ -142,7 +110,7 @@ class LocalesTest < Minitest::Test
         I18n.t(
           "recording_studio.site_categories.select.placeholder",
           label: "Couleurs",
-          default: "Select %{label}"
+          default: RecordingStudioSiteCategories::I18nDefaults::SELECT_PLACEHOLDER
         )
       )
       assert_equal(
@@ -150,13 +118,55 @@ class LocalesTest < Minitest::Test
         I18n.t(
           "recording_studio.site_categories.errors.not_a_valid",
           label: "Couleurs",
-          default: "is not a valid %{label}"
+          default: RecordingStudioSiteCategories::I18nDefaults::NOT_A_VALID
         )
       )
     end
   end
 
   private
+
+  def assert_english_index_and_layout_keys
+    assert_equal "Site categories", I18n.t("recording_studio.site_categories.index.title", raise: true)
+    assert_equal(
+      "Category groups registered at boot for the current host app.",
+      I18n.t("recording_studio.site_categories.index.subtitle", raise: true)
+    )
+    assert_equal "Key", I18n.t("recording_studio.site_categories.index.columns.key", raise: true)
+    assert_equal "Label", I18n.t("recording_studio.site_categories.index.columns.label", raise: true)
+    assert_equal "Items", I18n.t("recording_studio.site_categories.index.columns.items", raise: true)
+    assert_equal(
+      "RecordingStudio Site Categories",
+      I18n.t("recording_studio.site_categories.layout.application_name", raise: true)
+    )
+  end
+
+  def assert_english_select_and_error_keys
+    assert_equal(
+      "Select Site colours",
+      I18n.t(
+        "recording_studio.site_categories.select.placeholder",
+        label: "Site colours",
+        raise: true
+      )
+    )
+    assert_equal(
+      "is not a valid Site colours",
+      I18n.t(
+        "recording_studio.site_categories.errors.not_a_valid",
+        label: "Site colours",
+        raise: true
+      )
+    )
+    assert_equal(
+      "contains invalid values: Green, Yellow",
+      I18n.t(
+        "recording_studio.site_categories.errors.contains_invalid_values",
+        values: "Green, Yellow",
+        raise: true
+      )
+    )
+  end
 
   def engine_locales_dir
     File.expand_path("../config/locales", __dir__)

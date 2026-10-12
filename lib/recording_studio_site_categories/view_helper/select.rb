@@ -41,7 +41,7 @@ module RecordingStudioSiteCategories
         I18n.t(
           "recording_studio.site_categories.select.placeholder",
           label: label,
-          default: "Select %{label}"
+          default: I18nDefaults::SELECT_PLACEHOLDER
         )
       end
 

@@ -68,3 +68,9 @@ jobs:
       run: bundle exec rake test:all
       env:
         DATABASE_URL: postgres://postgres:postgres@localhost:5432/recording_studio_site_categories_test
+
+    - name: Run site categories i18n tests
+      run: bundle exec bin/rails test test/integration/site_categories_i18n_test.rb --verbose
+      working-directory: test/dummy
+      env:
+        DATABASE_URL: postgres://postgres:postgres@localhost:5432/recording_studio_site_categories_test

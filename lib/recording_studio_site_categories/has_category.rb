@@ -62,7 +62,7 @@ module RecordingStudioSiteCategories
       I18n.t(
         "recording_studio.site_categories.errors.not_a_valid",
         label: label,
-        default: "is not a valid %{label}"
+        default: I18nDefaults::NOT_A_VALID
       )
     end
 
@@ -70,7 +70,7 @@ module RecordingStudioSiteCategories
       I18n.t(
         "recording_studio.site_categories.errors.contains_invalid_values",
         values: invalid.join(", "),
-        default: "contains invalid values: %{values}"
+        default: I18nDefaults::CONTAINS_INVALID_VALUES
       )
     end
   end

@@ -88,7 +88,7 @@ registry, helpers, and dummy demo are unchanged.
 - Basic test suite with Minitest
 
 [Unreleased]: https://github.com/bowerbird-app/RecordingStudio_site_categories/compare/v0.3.0...HEAD
-[0.3.0]: https://github.com/bowerbird-app/RecordingStudio_site_categories/releases/tag/v0.3.0
+[0.3.0]: https://github.com/bowerbird-app/RecordingStudio_site_categories/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/bowerbird-app/RecordingStudio_site_categories/releases/tag/v0.2.0
 [0.1.1]: https://github.com/bowerbird-app/RecordingStudio_site_categories/releases/tag/v0.1.1
 [0.1.0]: https://github.com/bowerbird-app/RecordingStudio_site_categories/releases/tag/v0.1.0
