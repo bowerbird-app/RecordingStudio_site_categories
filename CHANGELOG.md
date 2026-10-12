@@ -34,6 +34,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - To translate or override the new defaults, add keys under
   `recording_studio.site_categories.select` and
   `recording_studio.site_categories.errors` in the host's locale files.
+- For multiple-value HasCategory errors, `errors.details` carries the
+  translated string in non-English locales (English remains byte-identical
+  to 0.2.x).
 - There is no dependency on `recording_studio_internationalization`.
 
 ## [0.2.0] - 2026-10-09

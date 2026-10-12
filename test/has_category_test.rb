@@ -204,8 +204,12 @@ class HasCategoryTest < Minitest::Test
     assert record.errors.added?(:site_colours, type)
   end
 
-  def test_multiple_error_details_type_stays_english_under_non_english_locale
+  def test_multiple_error_details_and_full_messages_follow_non_english_locale
     model = Class.new do
+      def self.model_name
+        @model_name ||= ActiveModel::Name.new(self, nil, "MultiColourModel")
+      end
+
       include ActiveModel::Model
       include ActiveModel::Validations
 
@@ -231,11 +235,12 @@ class HasCategoryTest < Minitest::Test
 
       I18n.with_locale(:fr) do
         record = model.new(site_colours: %w[Green Yellow])
-        type = "contains invalid values: Green, Yellow"
+        translated = "contient des valeurs invalides: Green, Yellow"
 
         refute record.valid?
-        assert_equal [{ error: type }], record.errors.details[:site_colours]
-        assert record.errors.of_kind?(:site_colours, type)
+        assert_equal [{ error: translated }], record.errors.details[:site_colours]
+        assert_equal translated, record.errors[:site_colours].first
+        assert(record.errors.full_messages.any? { |message| message.include?(translated) })
       end
     end
   end

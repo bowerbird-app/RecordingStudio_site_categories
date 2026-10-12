@@ -65,12 +65,7 @@ module RecordingStudioSiteCategories
       invalid = values.reject { |value| allowed.include?(value.to_s) }
       return if invalid.empty?
 
-      add_invalid_values_error(record, attribute, invalid)
-    end
-
-    def self.add_invalid_values_error(record, attribute, invalid)
-      type = "contains invalid values: #{invalid.join(', ')}"
-      record.errors.add(attribute, type, message: contains_invalid_values_message(invalid))
+      record.errors.add(attribute, contains_invalid_values_message(invalid))
     end
 
     def self.not_a_valid_message(label)
