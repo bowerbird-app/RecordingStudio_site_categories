@@ -196,7 +196,7 @@ The `gem_template` helper provides access to all engine routes.
 
 ## RecordingStudio Host-App Check
 
-This template's dummy app pins RecordingStudio `v4.6.0`, Accessible `v0.17.0`,
+This template's dummy app pins RecordingStudio `v4.6.0`, Accessible `v0.18.0`,
 Trashable `v0.10.0` (`require: false`), Root Switchable `v0.9.0`, Cache `v0.5.0`,
 and Metrics `v0.2.0`. Keep
 `config.require_recordable_declarations = true`, declare
