@@ -17,15 +17,17 @@ class PagesController < ApplicationController
   end
 
   def create
-    @page = nil
-    current_root_recording.record(Page, actor: current_user) do |page|
-      page.assign_attributes(page_params)
-      @page = page
-    end
+    @page = Page.new(page_params)
+    RecordingStudio.record!(
+      action: "created",
+      recordable: @page,
+      root_recording: current_root_recording,
+      parent_recording: current_root_recording,
+      actor: current_user
+    )
 
     redirect_to pages_path, notice: "Page created successfully."
   rescue ActiveRecord::RecordInvalid
-    @page ||= Page.new(page_params)
     render :new, status: :unprocessable_entity
   end
 
@@ -34,13 +36,13 @@ class PagesController < ApplicationController
 
   def update
     recording = page_recording_for(@page)
-    if recording
-      root_recording_for(recording).revise(recording, actor: current_user, metadata: { source: "ui" }) do |page|
-        page.assign_attributes(page_params)
-      end
-    else
-      # Legacy/unrecorded rows can still exist in dummy data; update directly.
-      Page.unscoped.where(id: @page.id).update_all(page_params.to_h.merge(updated_at: Time.current))
+    unless recording
+      redirect_to pages_path, alert: "This page isn't on a workspace, so it can't be saved."
+      return
+    end
+
+    root_recording_for(recording).revise(recording, actor: current_user, metadata: { source: "ui" }) do |page|
+      page.assign_attributes(page_params)
     end
 
     redirect_to pages_path, notice: "Page updated successfully."
@@ -51,12 +53,12 @@ class PagesController < ApplicationController
 
   def destroy
     recording = page_recording_for(@page)
-    if recording
-      recording.trash!
-    else
-      # Legacy/unrecorded rows can still exist in dummy data; delete directly.
-      Page.unscoped.where(id: @page.id).delete_all
+    unless recording
+      redirect_to pages_path, alert: "This page isn't on a workspace, so it can't be removed."
+      return
     end
+
+    recording.recording_studio_trashable_trash!(actor: current_user)
 
     redirect_to pages_path, notice: "Page deleted successfully."
   end

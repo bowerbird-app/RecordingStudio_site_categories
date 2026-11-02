@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_12_044359) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_02_000001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -103,6 +103,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_12_044359) do
     t.uuid "recordable_id", null: false
     t.string "recordable_type", null: false
     t.uuid "root_recording_id"
+    t.boolean "trash_root", default: false, null: false
     t.datetime "trashed_at"
     t.datetime "updated_at", null: false
     t.index ["parent_recording_id"], name: "index_recording_studio_recordings_on_parent_recording_id"
@@ -112,6 +113,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_12_044359) do
     t.index ["root_recording_id", "parent_recording_id"], name: "index_rs_recordings_on_root_and_parent"
     t.index ["root_recording_id", "recordable_type", "recordable_id"], name: "index_rs_recordings_on_root_and_recordable"
     t.index ["root_recording_id"], name: "index_rs_recordings_on_root_recording"
+    t.index ["trashed_at", "trash_root"], name: "idx_rs_recordings_trashed_at_trash_root"
   end
 
   create_table "recording_studio_root_switchable_selections", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

@@ -27,7 +27,10 @@ RecordingStudioRootSwitchable.configure do |config|
         RecordingStudio.root_recording_for(workspace)
       end
     end
-    scope.access_check = ->(**) { true }
+    scope.access_check = lambda do |actor:, recording:, **|
+      actor.present? &&
+        RecordingStudioAccessible.authorized?(actor: actor, recording: recording, role: :view)
+    end
 
     scope.default_root = lambda do |roots:, **|
       roots.first
@@ -44,7 +47,7 @@ def internal_route?(path)
   routes.any? do |route_set|
     route_set.recognize_path(path, method: :get)
     true
-  rescue StandardError
+  rescue ActionController::RoutingError
     false
   end
 end

@@ -22,8 +22,12 @@ class RecordingStudioV3TemplateTest < ActiveSupport::TestCase
 
     page = Page.find_by!(title: "Getting Started")
     page_recording = RecordingStudio::Recording.find_by!(recordable: page)
+    user = User.find_by!(email: "admin@admin.com")
+    workspace = Workspace.find_by!(name: "Studio Workspace")
+    root = RecordingStudio.root_recording_for(workspace)
     assert_nil Current.actor
     assert_equal page, page_recording.recordable
+    assert RecordingStudioAccessible.authorized?(actor: user, recording: root, role: :view)
   ensure
     Current.actor = nil
   end
