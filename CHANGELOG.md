@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-11-02
+
+### Changed
+
+* Dummy `Page` includes HasCategory for colour and publication type
+* Dummy page writes go through `RecordingStudio.record!` and `revise`;
+  destroy soft-deletes through Trashable and refuses unrecorded rows
+* Dummy root switcher checks Accessible grants on the workspace root
+* Dummy tests exercise the real FlatPack select instead of inventing one
+
+### Fixed
+
+* Stopped tracking SimpleCov HTML under `coverage/` and `test/dummy/coverage/`
+* Removed leftover `gem_template` RuboCop paths
+* Rename verification loads the engine instead of skipping
+
+### Upgrade notes
+
+- No host or schema change. This gem's public registry, HasCategory, and
+  helpers are unchanged. Dummy-app-only cleanup.
+
 ## [0.3.0] - 2026-10-12
 
 ### Added
@@ -59,6 +80,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `recording_studio.site_categories` in the host's locale files.
 - There is no dependency on `recording_studio_internationalization`.
 
+## [0.1.2] - 2026-09-09
+
+Shared dummy-app development master key. Regenerated
+`test/dummy/config/credentials.yml.enc` with the RecordingStudio_*
+development key. The category registry, helpers, and dummy demo are
+unchanged.
+
+### Upgrade notes
+
+- No host or schema changes. Developers set `RAILS_MASTER_KEY` or
+  `test/dummy/config/master.key` to the shared dummy key.
+
 ## [0.1.1] - 2026-09-04
 
 Cloud Agent Builds for this gem now match Billing 0.9.13. The category
@@ -96,8 +129,10 @@ registry, helpers, and dummy demo are unchanged.
 - Comprehensive README and documentation
 - Basic test suite with Minitest
 
-[Unreleased]: https://github.com/bowerbird-app/RecordingStudio_site_categories/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/bowerbird-app/RecordingStudio_site_categories/compare/v0.3.1...HEAD
+[0.3.1]: https://github.com/bowerbird-app/RecordingStudio_site_categories/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/bowerbird-app/RecordingStudio_site_categories/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/bowerbird-app/RecordingStudio_site_categories/releases/tag/v0.2.0
+[0.1.2]: https://github.com/bowerbird-app/RecordingStudio_site_categories/releases/tag/v0.1.2
 [0.1.1]: https://github.com/bowerbird-app/RecordingStudio_site_categories/releases/tag/v0.1.1
 [0.1.0]: https://github.com/bowerbird-app/RecordingStudio_site_categories/releases/tag/v0.1.0

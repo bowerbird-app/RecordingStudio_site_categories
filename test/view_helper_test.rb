@@ -8,10 +8,7 @@ class ViewHelperTest < Minitest::Test
     include ActionView::Helpers::OutputSafetyHelper
     include RecordingStudioSiteCategories::ViewHelper
 
-    attr_reader :last_component
-
-    def render(component)
-      @last_component = component
+    def render(_component)
       "rendered-select"
     end
   end
@@ -52,44 +49,24 @@ class ViewHelperTest < Minitest::Test
     refute @helper.recording_studio_site_category_valid?(:colour, "Green")
   end
 
-  def test_select_builds_flatpack_component_from_form_object
-    page = Struct.new(:site_colour, :errors).new("Black", { site_colour: ["is invalid"] })
-    form = Struct.new(:object_name, :object).new("page", page)
-
-    result = with_stubbed_flatpack_select_component do |component_class|
-      rendered = @helper.recording_studio_site_category_select(
-        form, :colour, attribute_name: :site_colour, searchable: true
-      )
-
-      component = @helper.last_component
-      assert_instance_of component_class, component
-      assert_equal "page[site_colour]", component.name
-      assert_equal %w[Red Black Blue], component.options
-      assert_equal "Black", component.value
-      assert_equal "Site colours", component.label
-      assert_equal "Select Site colours", component.placeholder
-      assert_equal "is invalid", component.error
-      assert_equal true, component.system_arguments[:searchable]
-
-      rendered
-    end
-
-    assert_equal "rendered-select", result
+  def test_flatpack_select_is_unavailable_in_the_gem_suite
+    refute defined?(::FlatPack)
+    refute @helper.recording_studio_site_categories_flatpack_component_available?(
+      "FlatPack::Select::Component"
+    )
   end
 
   def test_select_falls_back_to_standard_form_builder_when_flatpack_is_absent
     page = Struct.new(:site_colour, :errors).new("Black", { site_colour: ["is invalid"] })
     form = FallbackForm.new("page", page)
 
-    result = without_flatpack do
-      @helper.recording_studio_site_category_select(
-        form,
-        :colour,
-        attribute_name: :site_colour,
-        class: "w-full",
-        searchable: true
-      )
-    end
+    result = @helper.recording_studio_site_category_select(
+      form,
+      :colour,
+      attribute_name: :site_colour,
+      class: "w-full",
+      searchable: true
+    )
 
     assert_includes result, "<label"
     assert_includes result, "Site colours"
@@ -108,25 +85,26 @@ class ViewHelperTest < Minitest::Test
 
   def test_select_placeholder_uses_english_default_in_non_english_locale
     page = Struct.new(:site_colour, :errors).new(nil, {})
-    form = Struct.new(:object_name, :object).new("page", page)
+    form = FallbackForm.new("page", page)
 
     with_isolated_i18n_backend do
       I18n.available_locales = %i[en fr]
       I18n.with_locale(:fr) do
-        with_stubbed_flatpack_select_component do
-          @helper.recording_studio_site_category_select(
-            form, :colour, attribute_name: :site_colour
-          )
+        @helper.recording_studio_site_category_select(
+          form, :colour, attribute_name: :site_colour
+        )
 
-          assert_equal "Select Site colours", @helper.last_component.placeholder
-        end
+        assert_equal(
+          { include_blank: "Select Site colours" },
+          form.select_arguments[2]
+        )
       end
     end
   end
 
   def test_select_placeholder_follows_translated_locale_string
     page = Struct.new(:site_colour, :errors).new(nil, {})
-    form = Struct.new(:object_name, :object).new("page", page)
+    form = FallbackForm.new("page", page)
 
     with_isolated_i18n_backend do
       I18n.available_locales = %i[en fr]
@@ -144,13 +122,14 @@ class ViewHelperTest < Minitest::Test
       )
 
       I18n.with_locale(:fr) do
-        with_stubbed_flatpack_select_component do
-          @helper.recording_studio_site_category_select(
-            form, :colour, attribute_name: :site_colour
-          )
+        @helper.recording_studio_site_category_select(
+          form, :colour, attribute_name: :site_colour
+        )
 
-          assert_equal "Choisir Site colours", @helper.last_component.placeholder
-        end
+        assert_equal(
+          { include_blank: "Choisir Site colours" },
+          form.select_arguments[2]
+        )
       end
     end
   end
@@ -169,45 +148,5 @@ class ViewHelperTest < Minitest::Test
     I18n.backend = original_backend
     I18n.locale = original_locale
     I18n.available_locales = original_available_locales
-  end
-
-  def with_stubbed_flatpack_select_component
-    without_flatpack do
-      component_class = Class.new do
-        attr_reader :name, :options, :value, :label, :placeholder, :error, :system_arguments
-
-        def initialize(**attrs)
-          @name = attrs[:name]
-          @options = attrs[:options]
-          @value = attrs[:value]
-          @label = attrs[:label]
-          @placeholder = attrs[:placeholder]
-          @error = attrs[:error]
-          @system_arguments = attrs.except(
-            :name, :options, :value, :label, :placeholder, :error, :multiple
-          )
-        end
-      end
-
-      flat_pack = Module.new
-      select_namespace = Module.new
-      select_namespace.const_set(:Component, component_class)
-      flat_pack.const_set(:Select, select_namespace)
-      Object.const_set(:FlatPack, flat_pack)
-
-      yield component_class
-    end
-  ensure
-    Object.send(:remove_const, :FlatPack) if Object.const_defined?(:FlatPack, false)
-  end
-
-  def without_flatpack
-    previous_flat_pack = Object.const_get(:FlatPack) if Object.const_defined?(:FlatPack, false)
-    Object.send(:remove_const, :FlatPack) if previous_flat_pack
-
-    yield
-  ensure
-    Object.send(:remove_const, :FlatPack) if Object.const_defined?(:FlatPack, false)
-    Object.const_set(:FlatPack, previous_flat_pack) if previous_flat_pack
   end
 end

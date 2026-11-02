@@ -14,14 +14,17 @@ class DummyPagesFlowTest < ActionDispatch::IntegrationTest
 
     sign_in @user
     @workspace = Workspace.find_or_create_by!(name: "AAA Flow Workspace")
-    @expected_root_recording = RecordingStudio.root_recording_for(Workspace.order(:name).first!)
+    @expected_root_recording = grant_workspace_admin!(@user, @workspace)
+    switch_to_root(@expected_root_recording)
   end
 
   test "create records a page through recording studio" do
     assert_difference(["Page.count", "RecordingStudio::Recording.count"], 1) do
-      post pages_path, params: {
+      post "/pages", params: {
         page: {
           title: "Created Through Flow",
+          site_colour: "Red",
+          site_publications: ["Magazine"],
           ignored: "value"
         }
       }
@@ -30,13 +33,15 @@ class DummyPagesFlowTest < ActionDispatch::IntegrationTest
     page = Page.find_by!(title: "Created Through Flow")
     recording = RecordingStudio::Recording.find_by!(recordable: page)
 
-    assert_redirected_to pages_path
+    assert_redirected_to "/pages"
     assert_equal @expected_root_recording.id, recording.root_recording_id
+    assert_equal "Red", page.site_colour
+    assert_equal ["Magazine"], page.site_publications
   end
 
   test "invalid create re-renders the form" do
     assert_no_difference("Page.count") do
-      post pages_path, params: {
+      post "/pages", params: {
         page: {
           title: ""
         }
@@ -47,28 +52,97 @@ class DummyPagesFlowTest < ActionDispatch::IntegrationTest
     assert_includes response.body, "prevented this page from being saved"
   end
 
-  test "update saves strong parameters on an existing page" do
-    page = Page.create!(title: "Editable Page")
+  test "create rejects a colour outside the registered group" do
+    assert_no_difference("Page.count") do
+      post "/pages", params: {
+        page: {
+          title: "Off palette",
+          site_colour: "Green"
+        }
+      }
+    end
 
-    patch page_path(page), params: {
+    assert_response :unprocessable_entity
+  end
+
+  test "update saves strong parameters on an existing page" do
+    page = record_page!(title: "Editable Page", site_colour: "Black")
+
+    patch "/pages/#{page.id}", params: {
       page: {
         title: "Updated Page",
+        site_colour: "Blue",
         ignored: "value"
       }
     }
 
-    assert_redirected_to pages_path
-    assert_equal "Updated Page", page.reload.title
+    updated = Page.order(created_at: :desc).find_by!(title: "Updated Page")
+
+    assert_redirected_to "/pages"
+    assert_equal "Blue", updated.site_colour
   end
 
-  test "destroy removes an existing page" do
-    page = Page.create!(title: "Disposable Page")
+  test "update refuses a page that is not on a workspace" do
+    page = Page.create!(title: "Orphan Page")
 
-    assert_difference("Page.count", -1) do
-      delete page_path(page)
+    patch "/pages/#{page.id}", params: {
+      page: {
+        title: "Should Not Save"
+      }
+    }
+
+    assert_redirected_to "/pages"
+    assert_equal "Orphan Page", page.reload.title
+    assert_equal "This page isn't on a workspace, so it can't be saved.", flash[:alert]
+  end
+
+  test "destroy trashes an existing page" do
+    page = record_page!(title: "Disposable Page")
+    recording = RecordingStudio::Recording.find_by!(recordable: page)
+
+    assert_no_difference("Page.count") do
+      delete "/pages/#{page.id}"
     end
 
-    assert_redirected_to pages_path
-    assert_nil Page.find_by(id: page.id)
+    assert_redirected_to "/pages"
+    assert recording.reload.trashed_at.present?
+  end
+
+  test "destroy refuses a page that is not on a workspace" do
+    page = Page.create!(title: "Orphan Delete Page")
+
+    assert_no_difference("Page.count") do
+      delete "/pages/#{page.id}"
+    end
+
+    assert_redirected_to "/pages"
+    assert Page.exists?(page.id)
+    assert_equal "This page isn't on a workspace, so it can't be removed.", flash[:alert]
+  end
+
+  private
+
+  def record_page!(title:, site_colour: "Red")
+    page = Page.new(title: title, site_colour: site_colour)
+    RecordingStudio.record!(
+      action: "created",
+      recordable: page,
+      root_recording: @expected_root_recording,
+      parent_recording: @expected_root_recording,
+      actor: @user
+    )
+    page
+  end
+
+  def switch_to_root(root_recording)
+    patch "/recording_studio_root_switchable/v1/root_switch", params: {
+      scope: "all_workspaces",
+      root_switch: {
+        root_recording_id: root_recording.id,
+        return_to: "/pages"
+      }
+    }
+
+    assert_redirected_to "/pages"
   end
 end

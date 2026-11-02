@@ -92,6 +92,11 @@ Use `RecordingStudioSiteCategories::HasCategory` to validate an attribute agains
 ```ruby
 class Page < ApplicationRecord
   include RecordingStudioSiteCategories::HasCategory.for(:colour, attribute: :site_colour)
+  include RecordingStudioSiteCategories::HasCategory.for(
+    :publication_type,
+    attribute: :site_publications,
+    multiple: true
+  )
 end
 ```
 
@@ -129,10 +134,17 @@ passes an English `default:` so a host locale with no fallback never shows
 
 The repository includes a dummy host app under `test/dummy` that shows:
 
-- a registered `:colour` category group
+- registered `:colour` and `:publication_type` groups
+- dummy `Page` validating those groups through HasCategory
 - a mounted categories listing page
-- a Pages CRUD flow using the existing RecordingStudio `Page` recordable
+- Pages CRUD through `RecordingStudio.record!`, `revise`, and Trashable
+- Accessible grants on workspace roots for the root switcher
 - FlatPack form inputs wired through `recording_studio_site_category_select`
+
+### Upgrading to 0.3.1
+
+No host or schema change. Dummy-app write paths and Accessible grants
+are demo-only. Public registry, HasCategory, and helpers are unchanged.
 
 Run the standard checks from the repository root with:
 

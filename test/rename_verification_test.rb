@@ -3,6 +3,10 @@
 require "yaml"
 require_relative "simplecov_helper"
 require "minitest/autorun"
+require "rails"
+require "action_controller"
+$LOAD_PATH.unshift File.expand_path("../lib", __dir__)
+require "recording_studio_site_categories"
 
 # =============================================================================
 # Gem Rename Verification Test Suite
@@ -36,7 +40,7 @@ require "minitest/autorun"
 #
 # USAGE:
 # ------
-#   # Run standalone (skips Rails-dependent tests)
+#   # Run standalone
 #   ruby test/rename_verification_test.rb
 #
 #   # Run with verbose output
@@ -307,20 +311,14 @@ class RenameVerificationTest < Minitest::Test
   end
 
   def test_gem_is_loadable_with_rails
-    # This test requires Rails - run within the dummy app context
-    # Skip if Rails is not available
-    skip("Rails not loaded - run within dummy app") unless defined?(::Rails::Engine)
-
-    begin
-      require @gem_name
-      mod = Object.const_get(@pascal_name)
-      assert_kind_of Module, mod, "#{@pascal_name} should be a module"
-      assert_kind_of Class, mod::Engine, "#{@pascal_name}::Engine should be a class"
-    rescue LoadError => e
-      flunk "Could not load gem: #{e.message}"
-    rescue NameError => e
-      flunk "Module or Engine not defined: #{e.message}"
-    end
+    require @gem_name
+    mod = Object.const_get(@pascal_name)
+    assert_kind_of Module, mod, "#{@pascal_name} should be a module"
+    assert_kind_of Class, mod::Engine, "#{@pascal_name}::Engine should be a class"
+  rescue LoadError => e
+    flunk "Could not load gem: #{e.message}"
+  rescue NameError => e
+    flunk "Module or Engine not defined: #{e.message}"
   end
 
   # ============================================================
