@@ -27,7 +27,7 @@ class AddTrashRootToRecordingStudioRecordings < ActiveRecord::Migration[8.1]
       add_index :recording_studio_recordings, %i[trashed_at trash_root], name: INDEX_NAME
     end
 
-    execute(BACKFILL_TRASH_ROOTS_SQL)
+    backfill_trash_roots
   end
 
   def down
@@ -36,6 +36,13 @@ class AddTrashRootToRecordingStudioRecordings < ActiveRecord::Migration[8.1]
     if index_exists?(:recording_studio_recordings, %i[trashed_at trash_root], name: INDEX_NAME)
       remove_index :recording_studio_recordings, name: INDEX_NAME
     end
+
     remove_column :recording_studio_recordings, :trash_root if column_exists?(:recording_studio_recordings, :trash_root)
+  end
+
+  private
+
+  def backfill_trash_roots
+    execute(BACKFILL_TRASH_ROOTS_SQL)
   end
 end
