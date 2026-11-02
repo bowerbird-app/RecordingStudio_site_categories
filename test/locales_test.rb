@@ -18,6 +18,7 @@ class LocalesTest < Minitest::Test
     "application_name" => "RecordingStudio Site Categories"
   }.freeze
 
+  # rubocop:disable Style/FormatStringToken
   SELECT_KEYS = {
     "placeholder" => "Select %{label}"
   }.freeze
@@ -26,6 +27,7 @@ class LocalesTest < Minitest::Test
     "not_a_valid" => "is not a valid %{label}",
     "contains_invalid_values" => "contains invalid values: %{values}"
   }.freeze
+  # rubocop:enable Style/FormatStringToken
 
   def setup
     @original_load_path = I18n.load_path.dup

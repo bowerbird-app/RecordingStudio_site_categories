@@ -30,4 +30,26 @@ class CategorySelectTest < ActionDispatch::IntegrationTest
     assert_includes response.body, "Magazine"
     refute_includes response.body, "translation missing"
   end
+
+  test "failed create keeps the real FlatPack select name options value label placeholder error and searchable" do
+    post pages_path, params: {
+      page: {
+        title: "Off palette",
+        site_colour: "Green"
+      }
+    }
+
+    assert_response :unprocessable_entity
+    html = response.body
+
+    assert_includes html, 'name="page[site_colour]"'
+    assert_includes html, "Red"
+    assert_includes html, "Black"
+    assert_includes html, "Blue"
+    assert_includes html, 'value="Green"'
+    assert_includes html, "Site colours"
+    assert_includes html, "Select Site colours"
+    assert_includes html, "is not a valid Site colours"
+    assert_includes html, 'data-flat-pack--select-searchable-value="true"'
+  end
 end

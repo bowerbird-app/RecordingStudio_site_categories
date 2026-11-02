@@ -5,6 +5,7 @@ require "rake/testtask"
 
 DUMMY_TEST_FILES = [
   File.expand_path("test/controllers/categories_page_test.rb", __dir__),
+  File.expand_path("test/categories_index_view_test.rb", __dir__),
   File.expand_path("test/dummy_pages_flow_test.rb", __dir__)
 ].freeze
 DUMMY_GEMFILE = File.expand_path("test/dummy/Gemfile", __dir__)
@@ -12,6 +13,7 @@ DUMMY_APP_ROOT = File.expand_path("test/dummy", __dir__)
 TEST_ROOT = File.expand_path("test", __dir__)
 ROOT_TEST_EXCLUSIONS = %w[
   test/controllers/categories_page_test.rb
+  test/categories_index_view_test.rb
   test/dummy/**/*_test.rb
   test/dummy_pages_flow_test.rb
   test/rename_verification_test.rb

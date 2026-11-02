@@ -7,9 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-Dummy Gemfile pins after 0.3.0 (Trashable 0.11.0 and earlier dummy-only bumps)
-are recorded in 0.3.1. Hosts of this gem do not take those pins.
-
 ## [0.3.1] - 2026-11-02
 
 ### Changed
@@ -23,9 +20,8 @@ are recorded in 0.3.1. Hosts of this gem do not take those pins.
 ### Fixed
 
 * Stopped tracking SimpleCov HTML under `coverage/` and `test/dummy/coverage/`
-* Removed leftover `gem_template` RuboCop paths and credential assertions
+* Removed leftover `gem_template` RuboCop paths
 * Rename verification loads the engine instead of skipping
-* Changelog 0.1.0 no longer claims UUID tables, Tailwind, Docker, or Codespaces
 
 ### Upgrade notes
 
@@ -123,14 +119,15 @@ registry, helpers, and dummy demo are unchanged.
 ## [0.1.0] - 2025-12-04
 
 ### Added
-- Initial release of the in-memory site category registry
-- Rails mountable engine with `HasCategory` and view helpers
-- Optional FlatPack select when the host already has FlatPack
-- Install generator, README, and a dummy host that demonstrates groups
-- Minitest coverage for the registry and helpers
-
-This gem has no tables of its own. It does not ship Tailwind, Docker
-Compose, or a Codespaces devcontainer.
+- Initial release
+- Rails mountable engine structure
+- PostgreSQL with UUID primary keys support
+- TailwindCSS v4 integration
+- GitHub Codespaces devcontainer configuration
+- Docker Compose setup with PostgreSQL and Redis
+- Install generator for host applications
+- Comprehensive README and documentation
+- Basic test suite with Minitest
 
 [Unreleased]: https://github.com/bowerbird-app/RecordingStudio_site_categories/compare/v0.3.1...HEAD
 [0.3.1]: https://github.com/bowerbird-app/RecordingStudio_site_categories/compare/v0.3.0...v0.3.1

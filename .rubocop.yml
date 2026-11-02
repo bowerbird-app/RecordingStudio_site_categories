@@ -50,11 +50,3 @@ Naming/VariableNumber:
 Lint/MissingSuper:
   Exclude:
     - 'test/services/**/*'
-
-# I18n interpolations use %{name}, not Ruby format tokens.
-Style/FormatStringToken:
-  Exclude:
-    - 'lib/recording_studio_site_categories/i18n_defaults.rb'
-    - 'test/has_category_test.rb'
-    - 'test/locales_test.rb'
-    - 'test/view_helper_test.rb'
