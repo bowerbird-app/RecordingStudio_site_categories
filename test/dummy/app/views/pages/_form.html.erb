@@ -40,9 +40,7 @@
         style: :primary
       ) %>
 
-      <%= link_to pages_path, class: "inline-flex" do %>
-        <%= render FlatPack::Button::Component.new(text: "Cancel", style: :secondary) %>
-      <% end %>
+      <%= render FlatPack::Button::Component.new(text: "Cancel", style: :secondary, url: pages_path) %>
     </div>
   </div>
 <% end %>

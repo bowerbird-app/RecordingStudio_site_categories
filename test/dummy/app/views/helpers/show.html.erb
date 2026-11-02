@@ -41,28 +41,20 @@
       variant: :h2
     ) %>
 
-    <table class="w-full border-collapse rounded-lg border border-slate-200 text-sm">
-      <thead class="bg-slate-50">
-        <tr>
-          <th class="px-4 py-3 text-left font-medium text-slate-900">Value</th>
-          <th class="px-4 py-3 text-left font-medium text-slate-900">Valid?</th>
-          <th class="px-4 py-3 text-left font-medium text-slate-900">Usage</th>
-        </tr>
-      </thead>
-      <tbody class="divide-y divide-slate-200 bg-white">
-        <% @valid_values.each do |value| %>
-          <tr>
-            <td class="px-4 py-3 align-top"><%= value %></td>
-            <td class="px-4 py-3 align-top">
-              <%= recording_studio_site_category_valid?(:colour, value) ? "✅" : "❌" %>
-            </td>
-            <td class="px-4 py-3 align-top font-mono text-xs text-slate-500">
-              recording_studio_site_category_valid?(:colour, "<%= value %>")
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+    <%
+      validation_rows = @valid_values.map do |value|
+        {
+          value: value,
+          valid: recording_studio_site_category_valid?(:colour, value) ? "✅" : "❌",
+          usage: %(recording_studio_site_category_valid?(:colour, "#{value}"))
+        }
+      end
+    %>
+    <%= render FlatPack::Table::Component.new(data: validation_rows, class: "text-sm") do |table| %>
+      <% table.column(title: "Value", html: ->(row) { row[:value] }) %>
+      <% table.column(title: "Valid?", html: ->(row) { row[:valid] }) %>
+      <% table.column(title: "Usage", html: ->(row) { tag.span(row[:usage], class: "font-mono text-xs text-slate-500") }) %>
+    <% end %>
   </section>
 
   <%# ── Select Helper Demo ── %>

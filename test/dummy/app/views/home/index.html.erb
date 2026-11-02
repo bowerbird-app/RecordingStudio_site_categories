@@ -38,13 +38,17 @@
 
       <% card.body do %>
         <div class="flex flex-wrap gap-3">
-          <%= link_to recording_studio_site_categories.root_path, class: "inline-flex" do %>
-            <%= render FlatPack::Button::Component.new(text: "View categories", style: :primary) %>
-          <% end %>
+          <%= render FlatPack::Button::Component.new(
+            text: "View categories",
+            style: :primary,
+            url: recording_studio_site_categories.root_path
+          ) %>
 
-          <%= link_to pages_path, class: "inline-flex" do %>
-            <%= render FlatPack::Button::Component.new(text: "Manage pages", style: :secondary) %>
-          <% end %>
+          <%= render FlatPack::Button::Component.new(
+            text: "Manage pages",
+            style: :secondary,
+            url: pages_path
+          ) %>
         </div>
       <% end %>
     <% end %>

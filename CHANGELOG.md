@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+* Dummy helpers validity demo uses FlatPack Table instead of a raw HTML table
+* Dummy home and page action buttons pass `url:` to FlatPack Button (dummy is on 0.1.95) instead of wrapping a button in `link_to`
+
 ## [0.3.1] - 2026-11-02
 
 ### Changed

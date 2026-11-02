@@ -140,6 +140,8 @@ The repository includes a dummy host app under `test/dummy` that shows:
 - Pages CRUD through `RecordingStudio.record!`, `revise`, and Trashable
 - Accessible grants on workspace roots for the root switcher
 - FlatPack form inputs wired through `recording_studio_site_category_select`
+- Dummy helpers validity demo uses FlatPack Table
+- Dummy demo buttons pass FlatPack Button `url:` (this dummy pins FlatPack 0.1.95)
 
 ### Upgrading to 0.3.1
 
