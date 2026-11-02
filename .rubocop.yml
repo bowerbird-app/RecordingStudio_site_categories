@@ -20,7 +20,6 @@ Layout/LineLength:
 Metrics/ClassLength:
   Exclude:
     - 'test/**/*'
-    - 'lib/gem_template/hooks.rb'
 
 Metrics/MethodLength:
   Exclude:
@@ -50,5 +49,12 @@ Naming/VariableNumber:
 # Don't require super in service initialize methods
 Lint/MissingSuper:
   Exclude:
-    - 'lib/gem_template/services/**/*'
     - 'test/services/**/*'
+
+# I18n interpolations use %{name}, not Ruby format tokens.
+Style/FormatStringToken:
+  Exclude:
+    - 'lib/recording_studio_site_categories/i18n_defaults.rb'
+    - 'test/has_category_test.rb'
+    - 'test/locales_test.rb'
+    - 'test/view_helper_test.rb'
