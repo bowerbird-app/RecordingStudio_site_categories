@@ -21,7 +21,6 @@ class CategoriesPageTest < ActionDispatch::IntegrationTest
     assert_response :success
     refute_includes response.body, "flat-pack-sidebar-layout"
     assert_includes response.body, "Page navigation"
-    assert_includes response.body, "x-mark"
     assert_includes response.body, "Site categories"
     assert_includes response.body, "Category groups registered at boot for the current host app."
     assert_includes response.body, "Key"

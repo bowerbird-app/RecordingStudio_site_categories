@@ -6,7 +6,7 @@
   ) %>
 
   <div class="flex justify-end">
-    <%= render FlatPack::Button::Component.new(text: "New page", style: :primary, url: new_page_path) %>
+    <%= render FlatPack::Button::Component.new(text: "New page", style: :primary, href: new_page_path) %>
   </div>
 
   <%
@@ -14,11 +14,11 @@
       hash[page.id] = capture do
   %>
         <div class="flex flex-wrap gap-2">
-          <%= render FlatPack::Button::Component.new(text: "Edit", style: :secondary, url: edit_page_path(page)) %>
+          <%= render FlatPack::Button::Component.new(text: "Edit", style: :secondary, href: edit_page_path(page)) %>
           <%= render FlatPack::Button::Component.new(
             text: "Delete",
             style: :secondary,
-            url: page_path(page),
+            href: page_path(page),
             data: { turbo_method: :delete, turbo_confirm: "Delete #{page.title}?" }
           ) %>
         </div>

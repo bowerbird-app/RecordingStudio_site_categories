@@ -141,7 +141,7 @@ The repository includes a dummy host app under `test/dummy` that shows:
 - Accessible grants on workspace roots for the root switcher
 - FlatPack form inputs wired through `recording_studio_site_category_select`
 - Dummy helpers validity demo uses FlatPack Table
-- Dummy demo buttons pass FlatPack Button `url:` (this dummy pins FlatPack 0.1.95)
+- Dummy demo buttons pass FlatPack Button `href:` (this dummy pins FlatPack 0.1.331)
 
 ### Upgrading to 0.3.1
 

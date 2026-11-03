@@ -18,37 +18,38 @@ class DummyFlatpackButtonsAndTableTest < ActionDispatch::IntegrationTest
     switch_to_root(@root_recording)
   end
 
-  test "home demo buttons are FlatPack links with url not nested link_to wrappers" do
+  test "home demo buttons are FlatPack links with href not nested link_to wrappers" do
     get "/"
 
     assert_response :success
-    assert_match %r{href="/recording_studio_site_categories/?}, response.body
-    assert_includes response.body, 'href="/pages"'
-    assert_includes response.body, "View categories"
-    assert_includes response.body, "Manage pages"
+    assert_select "a[href=?]", "/recording_studio_site_categories/", text: "View categories"
+    assert_select "a[href=?]", "/pages", text: "Manage pages"
+    assert_select "button[url]", false
     refute_includes response.body, 'class="inline-flex"><button'
   end
 
-  test "pages index new edit and delete are FlatPack buttons with url and turbo delete data" do
+  test "pages index new edit and delete are FlatPack buttons with href and turbo delete data" do
     page = record_page!(title: "Adoption Delete Page")
 
     get "/pages"
 
     assert_response :success
-    assert_includes response.body, 'href="/pages/new"'
-    assert_includes response.body, %(href="/pages/#{page.id}/edit")
-    assert_includes response.body, %(href="/pages/#{page.id}")
-    assert_includes response.body, 'data-turbo-method="delete"'
-    assert_includes response.body, 'data-turbo-confirm="Delete Adoption Delete Page?"'
+    assert_select "a[href=?]", "/pages/new", text: "New page"
+    assert_select "a[href=?]", "/pages/#{page.id}/edit", text: "Edit"
+    assert_select "a[href=?][data-turbo-method=delete]", "/pages/#{page.id}" do |links|
+      assert_equal "Delete Adoption Delete Page?", links.first["data-turbo-confirm"]
+      assert_equal "Delete", links.first.text.strip
+    end
+    assert_select "button[url]", false
     refute_includes response.body, 'class="inline-flex" data-turbo-method'
   end
 
-  test "page form cancel is a FlatPack button url to pages" do
+  test "page form cancel is a FlatPack button href to pages" do
     get "/pages/new"
 
     assert_response :success
-    assert_includes response.body, "Cancel"
-    assert_includes response.body, 'href="/pages"'
+    assert_select "a[href=?]", "/pages", text: "Cancel"
+    assert_select "button[url]", false
     refute_includes response.body, 'class="inline-flex"><button'
   end
 
