@@ -9,6 +9,7 @@ This Rails app demonstrates `recording_studio_site_categories` inside a Recordin
 - A boot-time `:colour` site category group
 - A mounted categories index under `/recording_studio_site_categories`
 - A simple Pages CRUD demo for title-based records
+- FlatPack `v0.1.331` Table on helpers/pages and Button `href:` links for demo actions
 
 ## Quick Start
 

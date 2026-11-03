@@ -3,7 +3,7 @@
     <%= render FlatPack::Alert::Component.new(
       title: "#{pluralize(page.errors.count, "error")} prevented this page from being saved:",
       description: page.errors.full_messages.join(", "),
-      variant: :danger,
+      style: :danger,
       dismissible: true
     ) %>
   <% end %>
@@ -40,9 +40,7 @@
         style: :primary
       ) %>
 
-      <%= link_to pages_path, class: "inline-flex" do %>
-        <%= render FlatPack::Button::Component.new(text: "Cancel", style: :secondary) %>
-      <% end %>
+      <%= render FlatPack::Button::Component.new(text: "Cancel", style: :secondary, href: pages_path) %>
     </div>
   </div>
 <% end %>

@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+* Dummy helpers validity demo uses FlatPack Table instead of a raw HTML table
+* Dummy pins FlatPack `v0.1.331` and demo Buttons use `href:` so they render as `<a href>`
+* Dummy Card, Alert, and Sidebar keywords updated for that FlatPack pin
+* Dummy overrides the Root Switchable switch page so PageNav close and Card match FlatPack 0.1.331
+* Engine categories PageNav close control does not render on FlatPack 0.1.331.
+  `anchor_url:` is a dead HTML attribute. The fallback HTML table is unchanged.
+
 ## [0.3.1] - 2026-11-02
 
 ### Changed

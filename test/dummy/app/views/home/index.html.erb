@@ -6,7 +6,7 @@
   ) %>
 
   <div class="grid gap-6 lg:grid-cols-2">
-    <%= render FlatPack::Card::Component.new(style: :default) do |card| %>
+    <%= render FlatPack::Card::Component.new do |card| %>
       <% card.header do %>
         <%= render FlatPack::PageTitle::Component.new(
           title: "What this gem does",
@@ -26,7 +26,7 @@
       <% end %>
     <% end %>
 
-    <%= render FlatPack::Card::Component.new(style: :outlined) do |card| %>
+    <%= render FlatPack::Card::Component.new(border: :default) do |card| %>
       <% card.header do %>
         <%= render FlatPack::PageTitle::Component.new(
           title: "Demo paths",
@@ -38,13 +38,17 @@
 
       <% card.body do %>
         <div class="flex flex-wrap gap-3">
-          <%= link_to recording_studio_site_categories.root_path, class: "inline-flex" do %>
-            <%= render FlatPack::Button::Component.new(text: "View categories", style: :primary) %>
-          <% end %>
+          <%= render FlatPack::Button::Component.new(
+            text: "View categories",
+            style: :primary,
+            href: recording_studio_site_categories.root_path
+          ) %>
 
-          <%= link_to pages_path, class: "inline-flex" do %>
-            <%= render FlatPack::Button::Component.new(text: "Manage pages", style: :secondary) %>
-          <% end %>
+          <%= render FlatPack::Button::Component.new(
+            text: "Manage pages",
+            style: :secondary,
+            href: pages_path
+          ) %>
         </div>
       <% end %>
     <% end %>
