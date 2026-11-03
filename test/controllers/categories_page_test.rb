@@ -21,6 +21,9 @@ class CategoriesPageTest < ActionDispatch::IntegrationTest
     assert_response :success
     refute_includes response.body, "flat-pack-sidebar-layout"
     assert_includes response.body, "Page navigation"
+    assert_select "nav.flat-pack-page-nav[aria-label=?]", "Page navigation"
+    assert_select "nav.flat-pack-page-nav a[href='/']", false
+    assert_includes response.body, %(anchor_url="/")
     assert_includes response.body, "Site categories"
     assert_includes response.body, "Category groups registered at boot for the current host app."
     assert_includes response.body, "Key"
