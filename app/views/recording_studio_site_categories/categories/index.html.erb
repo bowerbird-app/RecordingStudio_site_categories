@@ -1,8 +1,50 @@
 <% content_for :title, t("recording_studio.site_categories.index.title", default: "Site categories") %>
 <% content_for :subtitle, t("recording_studio.site_categories.index.subtitle", default: "Category groups registered at boot for the current host app.") %>
 
-<%= render FlatPack::Table::Component.new(data: @groups, min_width: :none, class: "w-full max-w-full") do |table| %>
-  <% table.column(title: t("recording_studio.site_categories.index.columns.key", default: "Key"), wrap: :wrap, html: ->(group) { group.key.to_s }) %>
-  <% table.column(title: t("recording_studio.site_categories.index.columns.label", default: "Label"), wrap: :wrap, html: ->(group) { group.label }) %>
-  <% table.column(title: t("recording_studio.site_categories.index.columns.items", default: "Items"), wrap: :wrap, html: ->(group) { group.items.join(", ") }) %>
-<% end %>
+<div class="mx-auto flex w-full max-w-5xl flex-col gap-6">
+  <%= render FlatPack::PageNav::Component.new(anchor_url: "/") %>
+
+  <% if recording_studio_site_categories_flatpack_component_available?(
+    "FlatPack::PageTitle::Component",
+    "FlatPack::Card::Component",
+    "FlatPack::Table::Component"
+  ) %>
+    <%= render FlatPack::PageTitle::Component.new(
+      title: t("recording_studio.site_categories.index.title", default: "Site categories"),
+      subtitle: t("recording_studio.site_categories.index.subtitle", default: "Category groups registered at boot for the current host app."),
+      variant: :h1
+    ) %>
+
+    <%= render FlatPack::Table::Component.new(data: @groups, min_width: :none, class: "w-full max-w-full") do |table| %>
+      <% table.column(title: t("recording_studio.site_categories.index.columns.key", default: "Key"), wrap: :wrap, html: ->(group) { group.key.to_s }) %>
+      <% table.column(title: t("recording_studio.site_categories.index.columns.label", default: "Label"), wrap: :wrap, html: ->(group) { group.label }) %>
+      <% table.column(title: t("recording_studio.site_categories.index.columns.items", default: "Items"), wrap: :wrap, html: ->(group) { group.items.join(", ") }) %>
+    <% end %>
+  <% else %>
+    <div class="space-y-2">
+      <h1 class="text-2xl font-semibold"><%= t("recording_studio.site_categories.index.title", default: "Site categories") %></h1>
+      <p class="text-sm text-slate-600"><%= t("recording_studio.site_categories.index.subtitle", default: "Category groups registered at boot for the current host app.") %></p>
+    </div>
+
+    <div class="overflow-x-auto rounded-lg border border-slate-200 bg-white">
+      <table class="min-w-full divide-y divide-slate-200 text-left text-sm">
+        <thead class="bg-slate-50">
+          <tr>
+            <th scope="col" class="px-4 py-3 font-medium text-slate-900"><%= t("recording_studio.site_categories.index.columns.key", default: "Key") %></th>
+            <th scope="col" class="px-4 py-3 font-medium text-slate-900"><%= t("recording_studio.site_categories.index.columns.label", default: "Label") %></th>
+            <th scope="col" class="px-4 py-3 font-medium text-slate-900"><%= t("recording_studio.site_categories.index.columns.items", default: "Items") %></th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-200 bg-white">
+          <% @groups.each do |group| %>
+            <tr>
+              <td class="px-4 py-3 align-top"><%= group.key %></td>
+              <td class="px-4 py-3 align-top"><%= group.label %></td>
+              <td class="px-4 py-3 align-top"><%= group.items.join(", ") %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+</div>
