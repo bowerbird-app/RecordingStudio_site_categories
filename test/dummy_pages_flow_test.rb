@@ -82,7 +82,7 @@ class DummyPagesFlowTest < ActionDispatch::IntegrationTest
     assert_equal "Blue", updated.site_colour
   end
 
-  test "update refuses a page that is not on a workspace" do
+  test "update 404s when the page is not on the current root" do
     page = Page.create!(title: "Orphan Page")
 
     patch "/pages/#{page.id}", params: {
@@ -91,9 +91,30 @@ class DummyPagesFlowTest < ActionDispatch::IntegrationTest
       }
     }
 
-    assert_redirected_to "/pages"
+    assert_response :not_found
     assert_equal "Orphan Page", page.reload.title
-    assert_equal "This page isn't on a workspace, so it can't be saved.", flash[:alert]
+  end
+
+  test "update 404s when the page belongs to another workspace" do
+    other_workspace = Workspace.find_or_create_by!(name: "ZZZ Other Flow Workspace")
+    other_root = grant_workspace_admin!(@user, other_workspace)
+    page = Page.new(title: "Other Root Page", site_colour: "Red")
+    RecordingStudio.record!(
+      action: "created",
+      recordable: page,
+      root_recording: other_root,
+      parent_recording: other_root,
+      actor: @user
+    )
+
+    patch "/pages/#{page.id}", params: {
+      page: {
+        title: "Should Not Save"
+      }
+    }
+
+    assert_response :not_found
+    assert_equal "Other Root Page", page.reload.title
   end
 
   test "destroy trashes an existing page" do
@@ -108,16 +129,15 @@ class DummyPagesFlowTest < ActionDispatch::IntegrationTest
     assert recording.reload.trashed_at.present?
   end
 
-  test "destroy refuses a page that is not on a workspace" do
+  test "destroy 404s when the page is not on the current root" do
     page = Page.create!(title: "Orphan Delete Page")
 
     assert_no_difference("Page.count") do
       delete "/pages/#{page.id}"
     end
 
-    assert_redirected_to "/pages"
+    assert_response :not_found
     assert Page.exists?(page.id)
-    assert_equal "This page isn't on a workspace, so it can't be removed.", flash[:alert]
   end
 
   private

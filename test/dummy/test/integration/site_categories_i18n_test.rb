@@ -36,7 +36,6 @@ class SiteCategoriesI18nTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_includes response.body, "Site categories"
     assert_includes response.body, "Category groups registered at boot for the current host app."
-    assert_includes response.body, "RecordingStudio Site Categories"
     refute_includes response.body, "HOST Site categories"
     refute_includes response.body, "translation missing"
   end
@@ -70,7 +69,6 @@ class SiteCategoriesI18nTest < ActionDispatch::IntegrationTest
       assert_response :success
       assert_includes response.body, "HOST Site categories"
       assert_includes response.body, "HOST Category groups registered at boot for the current host app."
-      assert_includes response.body, "HOST RecordingStudio Site Categories"
       refute_includes response.body, ">Site categories<"
     ensure
       I18n.load_path = @original_load_path.dup

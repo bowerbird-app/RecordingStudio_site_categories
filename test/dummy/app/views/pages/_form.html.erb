@@ -33,7 +33,7 @@
       multiple: true
     ) %>
 
-    <div class="flex gap-2 pt-1">
+    <div class="flex flex-wrap gap-2 pt-1 min-w-0">
       <%= render FlatPack::Button::Component.new(
         text: page.persisted? ? "Save page" : "Create page",
         type: "submit",

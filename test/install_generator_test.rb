@@ -30,6 +30,8 @@ class InstallGeneratorTest < Minitest::Test
       assert_includes initializer, "RecordingStudioSiteCategories.register_group("
       assert_includes initializer, "  key: :colour,"
       assert_includes initializer, "  source: \"HostApp\""
+      assert_includes initializer, "# RecordingStudioSiteCategories.configure do |config|"
+      assert_includes initializer, "#   config.layout = nil"
       refute_match(/^#\s*RecordingStudioSiteCategories\.register_group/, initializer)
     end
   end

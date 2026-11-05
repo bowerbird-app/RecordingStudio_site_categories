@@ -1,4 +1,4 @@
-<div class="mx-auto flex w-full max-w-4xl flex-col gap-8">
+<div class="mx-auto flex w-full min-w-0 max-w-4xl flex-col gap-8">
   <%= render FlatPack::PageTitle::Component.new(
     title: "View Helpers",
     subtitle: "Available helpers from the recording_studio_site_categories gem.",
@@ -8,36 +8,40 @@
   <%# ── Label Helper ── %>
   <section id="label-helper">
     <%= render FlatPack::PageTitle::Component.new(
-      title: "recording_studio_site_category_label",
-      subtitle: "Returns the display label for a registered group key.",
+      title: "Label helper",
+      subtitle: "recording_studio_site_category_label returns the display label for a registered group key.",
       variant: :h2
     ) %>
 
+    <div class="min-w-0 max-w-full overflow-x-auto">
     <%= render FlatPack::CodeBlock::Component.new(
       code: "recording_studio_site_category_label(:colour)  # => \"#{@colour_label}\"",
       language: "ruby"
     ) %>
+    </div>
   </section>
 
   <%# ── Items / Options Helper ── %>
   <section id="items-helper">
     <%= render FlatPack::PageTitle::Component.new(
-      title: "recording_studio_site_category_items / options",
-      subtitle: "Returns the allowed values for a registered group.",
+      title: "Items helper",
+      subtitle: "recording_studio_site_category_items and options return the allowed values for a registered group.",
       variant: :h2
     ) %>
 
+    <div class="min-w-0 max-w-full overflow-x-auto">
     <%= render FlatPack::CodeBlock::Component.new(
       code: "recording_studio_site_category_items(:colour)   # => #{@colour_items.inspect}\nrecording_studio_site_category_options(:colour) # => #{recording_studio_site_category_options(:colour).inspect}",
       language: "ruby"
     ) %>
+    </div>
   </section>
 
   <%# ── Validation Helper ── %>
   <section id="validation-helper">
     <%= render FlatPack::PageTitle::Component.new(
-      title: "recording_studio_site_category_valid?",
-      subtitle: "Checks whether a value belongs to a registered group.",
+      title: "Valid? helper",
+      subtitle: "recording_studio_site_category_valid? checks whether a value belongs to a registered group.",
       variant: :h2
     ) %>
 
@@ -50,7 +54,7 @@
         }
       end
     %>
-    <%= render FlatPack::Table::Component.new(data: validation_rows, class: "text-sm") do |table| %>
+    <%= render FlatPack::Table::Component.new(data: validation_rows, min_width: :none, class: "w-full max-w-full text-sm") do |table| %>
       <% table.column(title: "Value", html: ->(row) { row[:value] }) %>
       <% table.column(title: "Valid?", html: ->(row) { row[:valid] }) %>
       <% table.column(title: "Usage", html: ->(row) { tag.span(row[:usage], class: "font-mono text-xs text-slate-500") }) %>
@@ -60,8 +64,8 @@
   <%# ── Select Helper Demo ── %>
   <section id="select-helper">
     <%= render FlatPack::PageTitle::Component.new(
-      title: "recording_studio_site_category_select",
-      subtitle: "Renders a FlatPack select dropdown when available, falls back to plain Rails select otherwise.",
+      title: "Select helper",
+      subtitle: "recording_studio_site_category_select renders a FlatPack select when available, or a Rails select otherwise.",
       variant: :h2
     ) %>
 
@@ -76,7 +80,9 @@
       <% end %>
     </div>
 
+    <div class="min-w-0 max-w-full overflow-x-auto">
     <%= render FlatPack::CodeBlock::Component.new(code: @select_usage_code) %>
+    </div>
 
     <%# ── Multiple Select ── %>
     <p class="text-sm text-slate-600 mt-6">
@@ -95,6 +101,8 @@
       <% end %>
     </div>
 
+    <div class="min-w-0 max-w-full overflow-x-auto">
     <%= render FlatPack::CodeBlock::Component.new(code: @select_multiple_direct_code) %>
+    </div>
   </section>
 </div>

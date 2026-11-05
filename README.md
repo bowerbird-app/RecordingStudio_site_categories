@@ -1,12 +1,13 @@
 # recording_studio_site_categories
 
 `recording_studio_site_categories` is a small Rails engine gem that provides a site-level, in-memory category registry.
-Other gems and host apps can register category groups during boot, then use those groups for validation and optional FlatPack-backed form inputs.
+Other gems and host apps can register category groups during boot, then use those groups for validation and optional FlatPack-backed form inputs. It requires Recording Studio `>= 6.3.0`, `< 7`.
 
 ## Why this gem exists
 
 RecordingStudio addons often need shared category vocabularies such as colours, tags, or classifications that should be defined once and reused across models and views.
-This gem centralizes those groups without creating its own tables or taking a runtime dependency on `recording_studio`.
+This gem centralizes those groups without creating its own tables. The mounted
+index and default layout follow Recording Studio core.
 
 ## Installation
 
@@ -21,6 +22,15 @@ Then install dependencies:
 ```bash
 bundle install
 ```
+
+### Upgrading to 0.4.0
+
+Hosts need Recording Studio `6.3.0` or newer, below 7. The mounted categories
+index uses core's default layout (`recording_studio_layout` plus
+`RecordingStudioSiteCategories.configuration.layout`, default `nil`). There is
+no engine blank layout and no HTML table fallback on that page. See
+[UPGRADING.md](UPGRADING.md). Registry, HasCategory, and the select helper are
+unchanged.
 
 ### Upgrading to 0.3.0
 
@@ -49,7 +59,10 @@ and dummy demo are unchanged. No host or schema changes.
 2. Rebuild the Cloud Agent environment with Draft off so Build fetches the
    skill pack.
 
-FlatPack is optional. If your app includes FlatPack, the gem will render FlatPack components for its helper and mounted index page. Without FlatPack, the helper falls back to a standard Rails `<select>` and the mounted index page renders plain HTML.
+FlatPack is optional for `recording_studio_site_category_select` (it falls back
+to a standard Rails `<select>`). The mounted categories index renders FlatPack
+`Table` inside core's default layout, which already draws FlatPack `PageTitle`
+from `content_for :title` and `:subtitle`.
 
 Run the install generator to create the host initializer:
 
@@ -116,19 +129,28 @@ The engine provides helpers for labels, values, validation checks, and select re
 
 ## Interface text
 
-The mounted categories index, blank layout, select placeholders, and HasCategory
-validation messages ship English Rails I18n keys under
+The mounted categories index, select placeholders, and HasCategory validation
+messages ship English Rails I18n keys under
 `recording_studio.site_categories` in `config/locales/en.yml`. Every lookup
 passes an English `default:` so a host locale with no fallback never shows
 "translation missing". Hosts override by defining the same keys in their own
 `config/locales`. The gem does not declare host languages and does not depend on
 `recording_studio_internationalization`.
 
+## Layout
+
+`RecordingStudioSiteCategories.configuration.layout` defaults to `nil`. A `nil`
+setting uses `RecordingStudio.configuration.layout`, then
+`recording_studio/default_layout`. Pass a layout name, `false`, or a callable
+that accepts `controller:`. `RecordingStudio::Layout.accept` validates the
+value. Call `recording_studio_layout` from the controller. Do not hard-code
+`layout "recording_studio/default_layout"`.
+
 ## Runtime and schema notes
 
 - The gem has **no database tables of its own**.
-- The gem does **not** depend on `recording_studio` at runtime.
-- The dummy app continues to use RecordingStudio so the feature can be demonstrated against the existing `Page` recordable.
+- The gem requires `recording_studio` `>= 6.3.0`, `< 7`.
+- The dummy app uses RecordingStudio so the feature can be demonstrated against the existing `Page` recordable.
 
 ## Dummy app demo
 
@@ -141,7 +163,7 @@ The repository includes a dummy host app under `test/dummy` that shows:
 - Accessible grants on workspace roots for the root switcher
 - FlatPack form inputs wired through `recording_studio_site_category_select`
 - Dummy helpers validity demo uses FlatPack Table
-- Dummy demo buttons pass FlatPack Button `href:` (this dummy pins FlatPack 0.1.331)
+- Dummy demo buttons pass FlatPack Button `href:` (this dummy pins FlatPack 0.1.341)
 
 ### Upgrading to 0.3.1
 

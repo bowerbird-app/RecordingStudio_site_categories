@@ -12,7 +12,7 @@ class RecordingStudioSiteCategoriesTest < Minitest::Test
   end
 
   def test_version_exists
-    refute_nil RecordingStudioSiteCategories::VERSION
+    assert_equal "0.4.0", RecordingStudioSiteCategories::VERSION
   end
 
   def test_module_level_registry_helpers_delegate

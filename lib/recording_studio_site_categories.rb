@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
+require "recording_studio"
 require "recording_studio_site_categories/version"
 require "recording_studio_site_categories/errors"
+require "recording_studio_site_categories/configuration"
 require "recording_studio_site_categories/group"
 require "recording_studio_site_categories/registry"
 require "recording_studio_site_categories/i18n_defaults"
@@ -11,6 +13,19 @@ require "recording_studio_site_categories/engine"
 
 module RecordingStudioSiteCategories
   class << self
+    def configuration
+      @configuration ||= Configuration.new
+    end
+
+    def configure
+      yield(configuration) if block_given?
+      configuration
+    end
+
+    def reset_configuration!
+      @configuration = Configuration.new
+    end
+
     def registry
       @registry ||= Registry.new
     end

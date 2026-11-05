@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* Keep FlatPack's mobile drawer utilities in the dummy CSS build. */
+@source inline("-translate-x-full");
+@source inline("md:translate-x-0");
+@source inline("translate-x-0");
+
 /* Include dummy app views for Tailwind CSS */
 @source "../../views/**/*.erb";
 

@@ -27,7 +27,7 @@
     end
   %>
 
-  <%= render FlatPack::Table::Component.new(data: @pages, class: "text-sm") do |table| %>
+  <%= render FlatPack::Table::Component.new(data: @pages, min_width: :none, class: "w-full max-w-full text-sm") do |table| %>
     <% table.column(title: "Title", html: ->(page) { page.title }) %>
     <% table.column(title: "Actions", html: ->(page) { page_actions[page.id] }) %>
   <% end %>

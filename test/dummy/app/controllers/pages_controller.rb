@@ -67,6 +67,9 @@ class PagesController < ApplicationController
 
   def set_page
     @page = Page.find(params[:id])
+    return if page_recording_for(@page)
+
+    raise ActiveRecord::RecordNotFound
   end
 
   def page_params
@@ -85,23 +88,17 @@ class PagesController < ApplicationController
   end
 
   def page_recording_for(page)
-    RecordingStudio::Recording.unscoped.find_by(recordable_type: page.class.name, recordable_id: page.id) ||
-      RecordingStudio::Recording.unscoped
-        .joins(:events)
-        .where(recording_studio_events: {
-                 recordable_type: page.class.name,
-                 recordable_id: page.id
-               })
-        .or(
-          RecordingStudio::Recording.unscoped
-            .joins(:events)
-            .where(recording_studio_events: {
-                     previous_recordable_type: page.class.name,
-                     previous_recordable_id: page.id
-                   })
-        )
-        .order(updated_at: :desc)
-        .first
+    root_id = current_root_recording.id
+    type_name = page.class.name
+    recordings = RecordingStudio::Recording.unscoped.where(root_recording_id: root_id)
+
+    recordings.find_by(recordable_type: type_name, recordable_id: page.id) ||
+      recordings.joins(:events).where(
+        recording_studio_events: { recordable_type: type_name, recordable_id: page.id }
+      ).order(updated_at: :desc).first ||
+      recordings.joins(:events).where(
+        recording_studio_events: { previous_recordable_type: type_name, previous_recordable_id: page.id }
+      ).order(updated_at: :desc).first
   end
 
   def root_recording_for(recording)
