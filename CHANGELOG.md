@@ -9,23 +9,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* `RecordingStudioSiteCategories.configuration.layout`, assigned through
-  `RecordingStudio::Layout.accept`. `nil` follows
-  `RecordingStudio.configuration.layout`, then `recording_studio/default_layout`.
+* `RecordingStudioSiteCategories.configuration.layout`. When Recording Studio
+  core is loaded, assignment goes through `RecordingStudio::Layout.accept`.
+  `nil` follows `RecordingStudio.configuration.layout`, then
+  `recording_studio/default_layout`.
 
 ### Changed
 
-* Requires `recording_studio` `>= 6.3.0`, `< 7`. Dummy pins Recording Studio
-  `v6.3.0`, Accessible `v0.24.1`, Trashable `v0.12.2`, Root Switchable
-  `v0.11.5`, Cache `v0.6.2`, Metrics `v0.7.2`, and FlatPack `v0.1.341`.
-* Engine controllers call
-  `recording_studio_layout { RecordingStudioSiteCategories.configuration.layout }`.
-* The mounted categories index uses core's default layout with FlatPack
-  `PageTitle` (via `content_for`) and `Table`. PageNav is omitted so the
-  default layout owns back and close. Table `min_width: :none` so long item
-  lists wrap at 390px instead of forcing a 40rem minimum.
-* Dummy page edit/update/destroy look up the recording under
-  `current_root_recording` so a page id from another workspace 404s.
+* Dummy pins Recording Studio `v6.3.0`, Accessible `v0.24.1`, Trashable
+  `v0.12.2`, Root Switchable `v0.11.5`, Cache `v0.6.2`, Metrics `v0.7.2`,
+  and FlatPack `v0.1.341`. The gem itself still has no runtime
+  `recording_studio` dependency.
+* When `RecordingStudio::ControllerLayout` is defined, engine controllers
+  call `recording_studio_layout { RecordingStudioSiteCategories.configuration.layout }`.
+  Otherwise they keep `layout "recording_studio_site_categories/blank"`.
+* The mounted categories index still falls back to a plain HTML table when
+  FlatPack table components are missing. When FlatPack is present, `Table`
+  uses `min_width: :none` and column `wrap: :wrap` so long item lists wrap
+  at 390px instead of forcing a 40rem minimum. `content_for` title/subtitle
+  feed core `PageTitle` when the default layout is on.
 * Dummy Root Switchable `config.layout` is the `"flat_pack_sidebar"` layout
   name. Tag `v0.11.5` rejects a controller method symbol.
 * Dummy Root Switchable show template stays overridden so PageNav uses
@@ -35,23 +37,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-* Engine layout `recording_studio_site_categories/blank`.
-* Tailwind HTML table fallback on the categories index.
-* Dead PageNav `anchor_url:` and the unused FlatPack Card availability check
-  on that page.
 * Template leftovers `docs/gem_template/`, `UPDATE_SUMMARY.md`, and
   `MIGRATION_NOTES.md`.
 
 ### Upgrade notes
 
-- Hosts need Recording Studio `6.3.0` or newer, below 7.
-- Mounted categories screens now use core's default layout. Set
+- Registry, HasCategory, and helpers stay usable without a runtime
+  Recording Studio dependency.
+- Hosts that load Recording Studio `6.3` can set
   `RecordingStudioSiteCategories.configuration.layout` to a layout name,
-  `false`, or `->(controller:) { ... }` if the host must wrap them
-  differently. Do not hard-code `layout "recording_studio/default_layout"`.
-- If you overrode the engine categories index, drop the blank layout, the
-  HTML table fallback, and PageNav `anchor_url:`.
-- Dummy-only: page ids are scoped to the current workspace root.
+  `false`, or `->(controller:) { ... }`. Do not hard-code
+  `layout "recording_studio/default_layout"`.
+- Hosts without core keep the blank engine layout and HTML table fallback.
 
 ## [0.3.1] - 2026-11-02
 
