@@ -23,7 +23,6 @@ PATH
   specs:
     recording_studio_site_categories (0.4.0)
       rails (>= 8.1.0)
-      recording_studio (>= 6.3.0, < 7)
 
 GEM
   remote: https://rubygems.org/
