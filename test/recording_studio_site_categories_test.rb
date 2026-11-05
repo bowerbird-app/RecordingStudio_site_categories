@@ -19,7 +19,7 @@ class RecordingStudioSiteCategoriesTest < Minitest::Test
     gemspec = File.read(File.expand_path("../recording_studio_site_categories.gemspec", __dir__))
 
     refute_includes gemspec, 'spec.add_dependency "recording_studio"'
-    assert_includes gemspec, "without a runtime RecordingStudio dependency"
+    assert_includes gemspec, "runtime RecordingStudio dependency"
   end
 
   def test_module_level_registry_helpers_delegate

@@ -113,9 +113,8 @@ class ViewHelperTest < Minitest::Test
         recording_studio: {
           site_categories: {
             select: {
-              # rubocop:disable Style/FormatStringToken
+              # rubocop:disable-next Style/FormatStringToken
               placeholder: "Choisir %{label}"
-              # rubocop:enable Style/FormatStringToken
             }
           }
         }

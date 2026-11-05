@@ -101,9 +101,8 @@ class HasCategoryTest < Minitest::Test
         recording_studio: {
           site_categories: {
             errors: {
-              # rubocop:disable Style/FormatStringToken
+              # rubocop:disable-next Style/FormatStringToken
               not_a_valid: "n'est pas un %{label} valide"
-              # rubocop:enable Style/FormatStringToken
             }
           }
         }
@@ -225,9 +224,8 @@ class HasCategoryTest < Minitest::Test
         recording_studio: {
           site_categories: {
             errors: {
-              # rubocop:disable Style/FormatStringToken
+              # rubocop:disable-next Style/FormatStringToken
               contains_invalid_values: "contient des valeurs invalides: %{values}"
-              # rubocop:enable Style/FormatStringToken
             }
           }
         }

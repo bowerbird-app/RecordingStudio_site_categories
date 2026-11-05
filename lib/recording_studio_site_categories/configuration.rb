@@ -9,11 +9,12 @@ module RecordingStudioSiteCategories
     end
 
     def layout=(value)
-      @layout = if defined?(::RecordingStudio::Layout)
-        RecordingStudio::Layout.accept(value)
-      else
-        value
-      end
+      @layout =
+        if defined?(::RecordingStudio::Layout)
+          RecordingStudio::Layout.accept(value)
+        else
+          value
+        end
     end
   end
 end
