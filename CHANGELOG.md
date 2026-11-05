@@ -34,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `with_close(href:)` instead of removed constructor kwargs.
 * Root and dummy lockfiles use Rails `8.1.4.1`, Rack `>= 3.2.8`, Nokogiri
   `>= 1.19.5`, Loofah `2.25.3`, and `rails-html-sanitizer` `>= 1.7.2`.
+  RuboCop stays on `1.81.7` and rubocop-ast on `1.48.0`, matching main.
 
 ### Removed
 
