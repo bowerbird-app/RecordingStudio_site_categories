@@ -2,10 +2,14 @@
 
 module RecordingStudioSiteCategories
   class ApplicationController < (defined?(::ApplicationController) ? ::ApplicationController : ActionController::Base)
-    include RecordingStudio::ControllerLayout
-
     protect_from_forgery with: :exception
 
-    recording_studio_layout { RecordingStudioSiteCategories.configuration.layout }
+    if defined?(::RecordingStudio::ControllerLayout)
+      include RecordingStudio::ControllerLayout
+
+      recording_studio_layout { RecordingStudioSiteCategories.configuration.layout }
+    else
+      layout "recording_studio_site_categories/blank"
+    end
   end
 end

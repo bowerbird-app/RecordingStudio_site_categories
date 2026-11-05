@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "recording_studio"
 require "recording_studio_site_categories/version"
 require "recording_studio_site_categories/errors"
 require "recording_studio_site_categories/configuration"

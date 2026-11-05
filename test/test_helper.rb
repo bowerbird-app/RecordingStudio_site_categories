@@ -10,6 +10,7 @@ require "action_view"
 require "active_model"
 require "i18n"
 require "yaml"
+require "recording_studio"
 require "recording_studio_site_categories"
 
 # Load gem English into the I18n backend without appending to I18n.load_path.

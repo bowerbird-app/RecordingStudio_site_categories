@@ -54,8 +54,9 @@ class ConfigurationTest < Minitest::Test
       File.expand_path("../app/controllers/recording_studio_site_categories/application_controller.rb", __dir__)
     )
 
+    assert_includes source, "if defined?(::RecordingStudio::ControllerLayout)"
     assert_includes source, "recording_studio_layout { RecordingStudioSiteCategories.configuration.layout }"
-    refute_match(%r{layout\s+["']recording_studio_site_categories/}, source)
+    assert_includes source, "layout \"recording_studio_site_categories/blank\""
     refute_includes source, "UsesDefaultLayout"
   end
 end

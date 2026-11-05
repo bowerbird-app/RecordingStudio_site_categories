@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "recording_studio/layout"
-
 module RecordingStudioSiteCategories
   class Configuration
     attr_reader :layout
@@ -11,7 +9,11 @@ module RecordingStudioSiteCategories
     end
 
     def layout=(value)
-      @layout = RecordingStudio::Layout.accept(value)
+      @layout = if defined?(::RecordingStudio::Layout)
+        RecordingStudio::Layout.accept(value)
+      else
+        value
+      end
     end
   end
 end

@@ -15,6 +15,13 @@ class RecordingStudioSiteCategoriesTest < Minitest::Test
     assert_equal "0.4.0", RecordingStudioSiteCategories::VERSION
   end
 
+  def test_gemspec_stays_free_of_a_runtime_recording_studio_dependency
+    gemspec = File.read(File.expand_path("../recording_studio_site_categories.gemspec", __dir__))
+
+    refute_includes gemspec, 'spec.add_dependency "recording_studio"'
+    assert_includes gemspec, "without a runtime RecordingStudio dependency"
+  end
+
   def test_module_level_registry_helpers_delegate
     RecordingStudioSiteCategories.register_group(
       key: :colour,
