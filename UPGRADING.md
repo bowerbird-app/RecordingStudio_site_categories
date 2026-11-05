@@ -19,3 +19,6 @@
    `layout "recording_studio/default_layout"`.
 5. If you copied the engine categories index into the host, keep the HTML
    table fallback. FlatPack `Table` now uses `min_width: :none` and wrap.
+6. With a host layout set via `configuration.layout = "application"`, the
+   page title appears only in the HTML `<title>` because the in-view
+   PageTitle is gone.

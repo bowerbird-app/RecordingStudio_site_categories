@@ -16,10 +16,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Dummy helpers validity demo uses FlatPack Table instead of a raw HTML table
 * Dummy pins Recording Studio `v6.3.0`, Accessible `v0.24.1`, Trashable
   `v0.12.2`, Root Switchable `v0.11.5`, Cache `v0.6.2`, Metrics `v0.7.2`,
   and FlatPack `v0.1.341`. The gem itself still has no runtime
   `recording_studio` dependency.
+* Dummy pins FlatPack `v0.1.331` and demo Buttons use `href:` so they render as `<a href>`
+* Dummy Card, Alert, and Sidebar keywords updated for that FlatPack pin
+* Dummy overrides the Root Switchable switch page so PageNav close and Card match FlatPack 0.1.331
 * When `RecordingStudio::ControllerLayout` is defined, engine controllers
   call `recording_studio_layout { RecordingStudioSiteCategories.configuration.layout }`.
   Otherwise they keep `layout "recording_studio_site_categories/blank"`.
@@ -32,6 +36,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   name. Tag `v0.11.5` rejects a controller method symbol.
 * Dummy Root Switchable show template stays overridden so PageNav uses
   `with_close(href:)` instead of removed constructor kwargs.
+* Engine categories PageNav close control does not render on FlatPack 0.1.331.
+  `anchor_url:` is a dead HTML attribute. The fallback HTML table is unchanged.
 * Root and dummy lockfiles use Rails `8.1.4.1`, Rack `>= 3.2.8`, Nokogiri
   `>= 1.19.5`, Loofah `2.25.3`, and `rails-html-sanitizer` `>= 1.7.2`.
   RuboCop stays on `1.81.7` and rubocop-ast on `1.48.0`, matching main.
