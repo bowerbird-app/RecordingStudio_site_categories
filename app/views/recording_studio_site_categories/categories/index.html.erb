@@ -1,3 +1,6 @@
+<% content_for :title, t("recording_studio.site_categories.index.title", default: "Site categories") %>
+<% content_for :subtitle, t("recording_studio.site_categories.index.subtitle", default: "Category groups registered at boot for the current host app.") %>
+
 <div class="mx-auto flex w-full max-w-5xl flex-col gap-6">
   <%= render FlatPack::PageNav::Component.new(anchor_url: "/") %>
 
@@ -6,16 +9,10 @@
     "FlatPack::Card::Component",
     "FlatPack::Table::Component"
   ) %>
-    <%= render FlatPack::PageTitle::Component.new(
-      title: t("recording_studio.site_categories.index.title", default: "Site categories"),
-      subtitle: t("recording_studio.site_categories.index.subtitle", default: "Category groups registered at boot for the current host app."),
-      variant: :h1
-    ) %>
-
-    <%= render FlatPack::Table::Component.new(data: @groups, class: "text-sm") do |table| %>
-      <% table.column(title: t("recording_studio.site_categories.index.columns.key", default: "Key"), html: ->(group) { group.key.to_s }) %>
-      <% table.column(title: t("recording_studio.site_categories.index.columns.label", default: "Label"), html: ->(group) { group.label }) %>
-      <% table.column(title: t("recording_studio.site_categories.index.columns.items", default: "Items"), html: ->(group) { group.items.join(", ") }) %>
+    <%= render FlatPack::Table::Component.new(data: @groups, min_width: :none, class: "w-full max-w-full") do |table| %>
+      <% table.column(title: t("recording_studio.site_categories.index.columns.key", default: "Key"), wrap: :wrap, html: ->(group) { group.key.to_s }) %>
+      <% table.column(title: t("recording_studio.site_categories.index.columns.label", default: "Label"), wrap: :wrap, html: ->(group) { group.label }) %>
+      <% table.column(title: t("recording_studio.site_categories.index.columns.items", default: "Items"), wrap: :wrap, html: ->(group) { group.items.join(", ") }) %>
     <% end %>
   <% else %>
     <div class="space-y-2">

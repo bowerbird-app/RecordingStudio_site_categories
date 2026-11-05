@@ -6,7 +6,7 @@ Other gems and host apps can register category groups during boot, then use thos
 ## Why this gem exists
 
 RecordingStudio addons often need shared category vocabularies such as colours, tags, or classifications that should be defined once and reused across models and views.
-This gem centralizes those groups without creating its own tables or taking a runtime dependency on `recording_studio`.
+This gem centralizes those groups without creating its own tables or taking a runtime dependency on `recording_studio`. When Recording Studio core is loaded, mounted screens can use its default layout.
 
 ## Installation
 
@@ -21,6 +21,15 @@ Then install dependencies:
 ```bash
 bundle install
 ```
+
+### Upgrading to 0.4.0
+
+No runtime Recording Studio dependency. When core is loaded, the mounted
+categories index can use `recording_studio_layout` plus
+`RecordingStudioSiteCategories.configuration.layout` (default `nil`). The
+blank engine layout and HTML table fallback remain for hosts without core
+or FlatPack. See [UPGRADING.md](UPGRADING.md). Registry, HasCategory, and
+the select helper are unchanged.
 
 ### Upgrading to 0.3.0
 
@@ -49,7 +58,7 @@ and dummy demo are unchanged. No host or schema changes.
 2. Rebuild the Cloud Agent environment with Draft off so Build fetches the
    skill pack.
 
-FlatPack is optional. If your app includes FlatPack, the gem will render FlatPack components for its helper and mounted index page. Without FlatPack, the helper falls back to a standard Rails `<select>` and the mounted index page renders plain HTML.
+FlatPack is optional. If your app includes FlatPack, the gem will render FlatPack components for its helper and mounted index page. Without FlatPack, the helper falls back to a standard Rails `<select>` and the mounted index page renders plain HTML. When Recording Studio core is loaded, `content_for :title` and `:subtitle` feed the default layout `PageTitle`.
 
 Run the install generator to create the host initializer:
 
@@ -124,6 +133,17 @@ passes an English `default:` so a host locale with no fallback never shows
 `config/locales`. The gem does not declare host languages and does not depend on
 `recording_studio_internationalization`.
 
+## Layout
+
+`RecordingStudioSiteCategories.configuration.layout` defaults to `nil`. When
+Recording Studio core is loaded, a `nil` setting uses
+`RecordingStudio.configuration.layout`, then `recording_studio/default_layout`.
+Pass a layout name, `false`, or a callable that accepts `controller:`.
+`RecordingStudio::Layout.accept` validates the value when that constant is
+defined. Call `recording_studio_layout` from the controller only in that case.
+Without core, the engine uses `recording_studio_site_categories/blank`. Do not
+hard-code `layout "recording_studio/default_layout"`.
+
 ## Runtime and schema notes
 
 - The gem has **no database tables of its own**.
@@ -141,7 +161,7 @@ The repository includes a dummy host app under `test/dummy` that shows:
 - Accessible grants on workspace roots for the root switcher
 - FlatPack form inputs wired through `recording_studio_site_category_select`
 - Dummy helpers validity demo uses FlatPack Table
-- Dummy demo buttons pass FlatPack Button `href:` (this dummy pins FlatPack 0.1.331)
+- Dummy demo buttons pass FlatPack Button `href:` (this dummy pins FlatPack 0.1.341)
 
 ### Upgrading to 0.3.1
 

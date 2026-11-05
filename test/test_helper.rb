@@ -10,6 +10,7 @@ require "action_view"
 require "active_model"
 require "i18n"
 require "yaml"
+require "recording_studio"
 require "recording_studio_site_categories"
 
 # Load gem English into the I18n backend without appending to I18n.load_path.
@@ -18,5 +19,8 @@ engine_locale = File.expand_path("../config/locales/en.yml", __dir__)
 I18n.backend.store_translations(:en, YAML.safe_load_file(engine_locale, aliases: true).fetch("en"))
 
 load File.expand_path("../config/routes.rb", __dir__)
+layout_helper = File.join(Gem.loaded_specs.fetch("recording_studio").full_gem_path,
+                          "app/helpers/recording_studio/layout_helper.rb")
+require layout_helper
 require File.expand_path("../app/controllers/recording_studio_site_categories/application_controller", __dir__)
 require File.expand_path("../app/controllers/recording_studio_site_categories/categories_controller", __dir__)

@@ -15,10 +15,11 @@ class CategoriesPageTest < ActionDispatch::IntegrationTest
     sign_in @user
   end
 
-  test "mounted categories page renders registered group details" do
+  test "mounted categories page renders registered group details in the default layout" do
     get "/recording_studio_site_categories"
 
     assert_response :success
+    assert_select "body[data-recording-studio-default-layout='true']", count: 1
     refute_includes response.body, "flat-pack-sidebar-layout"
     assert_includes response.body, "Page navigation"
     assert_select "nav.flat-pack-page-nav[aria-label=?]", "Page navigation"
@@ -29,7 +30,6 @@ class CategoriesPageTest < ActionDispatch::IntegrationTest
     assert_includes response.body, "Key"
     assert_includes response.body, "Label"
     assert_includes response.body, "Items"
-    assert_includes response.body, "RecordingStudio Site Categories"
     assert_includes response.body, "colour"
     assert_includes response.body, "Site colours"
     assert_includes response.body, "Red, Black, Blue"

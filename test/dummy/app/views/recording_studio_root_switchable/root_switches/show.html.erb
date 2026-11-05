@@ -1,4 +1,4 @@
-<%# FlatPack 0.1.331 dropped PageNav `anchor_label:` and Card `style:`. Host override of the Root Switchable 0.9 show template. %>
+<%# FlatPack 0.1.341 dropped PageNav constructor kwargs (`anchor_href:`). Host override of Root Switchable's show template. %>
 <div class="mx-auto flex w-full max-w-3xl flex-col gap-6">
   <% if flash[:notice].present? %>
     <%= render FlatPack::Alert::Component.new(style: :success, title: flash[:notice]) %>

@@ -13,3 +13,16 @@ RecordingStudioSiteCategories.register_group(
   items: ["Magazine", "Newspaper", "Journal", "Blog", "Newsletter", "Report"],
   source: "DummyApp"
 )
+
+RecordingStudioSiteCategories.register_group(
+  key: :long_list,
+  label: "A wrapping list of long category names for narrow screens",
+  items: [
+    "First-run catalogue reprint",
+    "Second-run collector edition",
+    "Third-run international paperback",
+    "Archive restoration master",
+    "Limited tour companion booklet"
+  ],
+  source: "DummyApp"
+)
