@@ -9,12 +9,6 @@
     "FlatPack::Card::Component",
     "FlatPack::Table::Component"
   ) %>
-    <%= render FlatPack::PageTitle::Component.new(
-      title: t("recording_studio.site_categories.index.title", default: "Site categories"),
-      subtitle: t("recording_studio.site_categories.index.subtitle", default: "Category groups registered at boot for the current host app."),
-      variant: :h1
-    ) %>
-
     <%= render FlatPack::Table::Component.new(data: @groups, min_width: :none, class: "w-full max-w-full") do |table| %>
       <% table.column(title: t("recording_studio.site_categories.index.columns.key", default: "Key"), wrap: :wrap, html: ->(group) { group.key.to_s }) %>
       <% table.column(title: t("recording_studio.site_categories.index.columns.label", default: "Label"), wrap: :wrap, html: ->(group) { group.label }) %>
