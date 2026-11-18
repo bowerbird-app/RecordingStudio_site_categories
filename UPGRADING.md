@@ -1,5 +1,16 @@
 # Upgrading recording_studio_site_categories
 
+## 0.4.0 to 0.4.1
+
+1. This gem still has no runtime `recording_studio` dependency. Registry,
+   HasCategory, and `recording_studio_site_category_select` are unchanged.
+2. The dummy app now pins Recording Studio `7.7.1`, Accessible `0.54.0`,
+   Trashable `1.2.0`, Root Switchable `0.16.0`, Cache `0.7.0`, Metrics
+   `0.9.1`, and FlatPack `0.1.378`.
+3. Hosts that do not load Recording Studio can ignore those pins. Hosts
+   that copied the dummy addon stack need Recording Studio `7.7` with the
+   same tags. This release was tested on `7.7.1` only.
+
 ## 0.3.x to 0.4.0
 
 1. This gem still has no runtime `recording_studio` dependency. Dummy and
