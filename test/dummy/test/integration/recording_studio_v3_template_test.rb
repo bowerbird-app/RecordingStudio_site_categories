@@ -15,6 +15,19 @@ class RecordingStudioV3TemplateTest < ActiveSupport::TestCase
     assert ActiveRecord::Base.connection.table_exists?(:pages)
   end
 
+  test "dummy schema includes recording studio write columns" do
+    connection = ActiveRecord::Base.connection
+    event_columns = connection.columns(:recording_studio_events).map(&:name)
+    recording_columns = connection.columns(:recording_studio_recordings).map(&:name)
+    request_columns = connection.columns(:recording_studio_access_requests).map(&:name)
+
+    assert_includes event_columns, "root_recording_id"
+    assert_includes recording_columns, "purge_at"
+    assert_includes request_columns, "gate_metadata"
+    assert_includes request_columns, "pending_key"
+    assert_includes request_columns, "target_recording_id"
+  end
+
   test "dummy seeds keep the page recordable" do
     Current.actor = nil
 

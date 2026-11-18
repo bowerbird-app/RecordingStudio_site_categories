@@ -1,80 +1,79 @@
 GIT
   remote: https://github.com/bowerbird-app/RecordingStudio.git
-  revision: 6acc0377fa4c940a2ff7222bbcbdc3ee6d59c591
-  tag: v6.3.0
+  revision: 332ba217cb0dd610a411f92137a54109673ad026
+  tag: v7.7.1
   specs:
-    recording_studio (6.3.0)
+    recording_studio (7.7.1)
       flat_pack (>= 0.1.315)
-      rails (>= 8.1.0)
+      rails (>= 8.1.4.1)
 
 GIT
   remote: https://github.com/bowerbird-app/RecordingStudio_accessible.git
-  revision: 573c9978314b819cdc2f8aa62e28ab86120979a4
-  tag: v0.24.1
+  revision: 3398b6b6afe7f37285d0ac95e1e7c9e77f135623
+  tag: v0.54.0
   specs:
-    recording_studio_accessible (0.24.1)
+    recording_studio_accessible (0.54.0)
       rails (~> 8.1.0)
-      recording_studio (~> 6.1, >= 6.1.0)
-      recording_studio_trashable (~> 0.10)
+      recording_studio (>= 7.7.0, < 8.0)
 
 GIT
   remote: https://github.com/bowerbird-app/RecordingStudio_cache.git
-  revision: 4d123db79226a1f18ce1289e09c867a5f9ed335c
-  tag: v0.6.2
+  revision: c5700000632d2554370f179da39a678082b9c3de
+  tag: v0.7.0
   specs:
-    recording_studio_cache (0.6.2)
-      rails (~> 8.1.0)
-      recording_studio (>= 6.1.0)
+    recording_studio_cache (0.7.0)
+      rails (>= 8.1.0)
+      recording_studio (>= 7.0, < 8.0)
 
 GIT
   remote: https://github.com/bowerbird-app/RecordingStudio_metrics.git
-  revision: cb87f3b47ec6825458e3f467f7b16a5cb407e96c
-  tag: v0.7.2
+  revision: 08a69c82cdd42ed7b7a78e9ea31ed26c6b36467a
+  tag: v0.9.1
   specs:
-    recording_studio_metrics (0.7.2)
+    recording_studio_metrics (0.9.1)
       rails (~> 8.1.0)
-      recording_studio (>= 6.1.0)
+      recording_studio (>= 7.0, < 8.0)
 
 GIT
   remote: https://github.com/bowerbird-app/RecordingStudio_root_switchable.git
-  revision: 41ea6e970bc61c841fc9c86f6020d1ab370a0141
-  tag: v0.11.5
+  revision: f3b77df92fe78573cb756d829bcd6d9f1e5d508d
+  tag: v0.16.0
   specs:
-    recording_studio_root_switchable (0.11.5)
+    recording_studio_root_switchable (0.16.0)
       flat_pack (>= 0.1.341)
       rails (~> 8.1.0)
-      recording_studio (>= 6.3.0, < 7)
-      recording_studio_accessible (~> 0.18)
-      recording_studio_cache (~> 0.5)
-      recording_studio_metrics (>= 0.3.0, < 1.0)
+      recording_studio (>= 7.0, < 8.0)
+      recording_studio_accessible (>= 0.44.0, < 1.0)
+      recording_studio_cache (>= 0.5, < 1.0)
+      recording_studio_metrics (>= 0.9.0, < 1.0)
       view_component (>= 4.14, < 5)
 
 GIT
   remote: https://github.com/bowerbird-app/RecordingStudio_trashable.git
-  revision: 07d715d32bb44225b9482f6318a071f7c1876141
-  tag: v0.12.2
+  revision: b20d4192641e5e7f2cd4e2c6d448caf320bbb0df
+  tag: v1.2.0
   specs:
-    recording_studio_trashable (0.12.2)
+    recording_studio_trashable (1.2.0)
       flat_pack (>= 0.1.315)
       rails (~> 8.1.0)
-      recording_studio (>= 6.1.0)
+      recording_studio (>= 7.0, < 8.0)
       recording_studio_metrics (>= 0.3.0, < 1.0)
 
 GIT
   remote: https://github.com/bowerbird-app/flatpack.git
-  revision: 374c9b7f7130057954df596597ff75f139c72b50
-  tag: v0.1.341
+  revision: 26ff760b7a4c3657d3197d275a95050a221b6961
+  tag: v0.1.378
   specs:
-    flat_pack (0.1.341)
+    flat_pack (0.1.378)
       pagy (~> 9.0)
       rails (>= 7.1, < 9)
-      tailwind_merge (~> 0.13)
+      tailwind_merge (>= 1.5.2, < 2)
       view_component (>= 4.14, < 5)
 
 PATH
   remote: ../..
   specs:
-    recording_studio_site_categories (0.4.0)
+    recording_studio_site_categories (0.4.1)
       rails (>= 8.1.0)
 
 GEM
@@ -424,7 +423,7 @@ GEM
     stimulus-rails (1.3.4)
       railties (>= 6.0.0)
     stringio (3.2.0)
-    tailwind_merge (0.16.0)
+    tailwind_merge (1.5.6)
       sin_lru_redux (~> 2.5)
     tailwindcss-rails (4.4.0)
       railties (>= 7.0.0)
@@ -562,7 +561,7 @@ CHECKSUMS
   ffi (1.17.2-x86_64-darwin) sha256=981f2d4e32ea03712beb26e55e972797c2c5a7b0257955d8667ba58f2da6440e
   ffi (1.17.2-x86_64-linux-gnu) sha256=05d2026fc9dbb7cfd21a5934559f16293815b7ce0314846fee2ac8efbdb823ea
   ffi (1.17.2-x86_64-linux-musl) sha256=97c0eb3981414309285a64dc4d466bd149e981c279a56371ef811395d68cb95c
-  flat_pack (0.1.341)
+  flat_pack (0.1.378)
   fugit (1.12.1) sha256=5898f478ede9b415f0804e42b8f3fd53f814bd85eebffceebdbc34e1107aaf68
   globalid (1.3.0) sha256=05c639ad6eb4594522a0b07983022f04aa7254626ab69445a0e493aa3786ff11
   i18n (1.14.8) sha256=285778639134865c5e0f6269e0b818256017e8cde89993fdfcbfb64d088824a5
@@ -630,13 +629,13 @@ CHECKSUMS
   rainbow (3.1.1) sha256=039491aa3a89f42efa1d6dec2fc4e62ede96eb6acd95e52f1ad581182b79bc6a
   rake (13.4.2) sha256=cb825b2bd5f1f8e91ca37bddb4b9aaf345551b4731da62949be002fa89283701
   rdoc (7.2.0) sha256=8650f76cd4009c3b54955eb5d7e3a075c60a57276766ebf36f9085e8c9f23192
-  recording_studio (6.3.0)
-  recording_studio_accessible (0.24.1)
-  recording_studio_cache (0.6.2)
-  recording_studio_metrics (0.7.2)
-  recording_studio_root_switchable (0.11.5)
-  recording_studio_site_categories (0.4.0)
-  recording_studio_trashable (0.12.2)
+  recording_studio (7.7.1)
+  recording_studio_accessible (0.54.0)
+  recording_studio_cache (0.7.0)
+  recording_studio_metrics (0.9.1)
+  recording_studio_root_switchable (0.16.0)
+  recording_studio_site_categories (0.4.1)
+  recording_studio_trashable (1.2.0)
   regexp_parser (2.11.3) sha256=ca13f381a173b7a93450e53459075c9b76a10433caadcb2f1180f2c741fc55a4
   reline (0.6.3) sha256=1198b04973565b36ec0f11542ab3f5cfeeec34823f4e54cebde90968092b1835
   responders (3.2.0) sha256=89c2d6ac0ae16f6458a11524cae4a8efdceba1a3baea164d28ee9046bd3df55a
@@ -655,7 +654,7 @@ CHECKSUMS
   sshkit (1.24.0) sha256=9597c1f984778ae9742f2dc839778d57a6a2efb868107046575c52ac7c628e6c
   stimulus-rails (1.3.4) sha256=765676ffa1f33af64ce026d26b48e8ffb2e0b94e0f50e9119e11d6107d67cb06
   stringio (3.2.0) sha256=c37cb2e58b4ffbd33fe5cd948c05934af997b36e0b6ca6fdf43afa234cf222e1
-  tailwind_merge (0.16.0) sha256=e2a2b26aaef57ae6af6d0e98380bbcbf324ce4e9778cd56df8e837c30e66005c
+  tailwind_merge (1.5.6) sha256=bf9b492446af3caafb4a4976465153eb800f6b4df2538974dee0e4acc5457530
   tailwindcss-rails (4.4.0) sha256=efa2961351a52acebe616e645a81a30bb4f27fde46cc06ce7688d1cd1131e916
   tailwindcss-ruby (4.1.16) sha256=d30e4713152bb89ebe1fddb5b5f9b31d7755bf5576453e601eb58b19174c48c0
   tailwindcss-ruby (4.1.16-aarch64-linux-gnu) sha256=916554206b47b4218ba9130ee369687a6546fba0224b7168f118e4f955b2f97e

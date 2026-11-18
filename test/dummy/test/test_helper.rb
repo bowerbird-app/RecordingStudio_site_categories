@@ -7,7 +7,7 @@ require "rails/test_help"
 
 module WorkspaceAccessHelpers
   def grant_workspace_admin!(user, workspace)
-    root = RecordingStudio.root_recording_for(workspace)
+    root = RecordingStudio.create_root_recording!(workspace, actor: user)
     return root if RecordingStudioAccessible.authorized?(actor: user, recording: root, role: :view)
 
     result = RecordingStudioAccessible.bootstrap_owner_access!(recording: root, actor: user)

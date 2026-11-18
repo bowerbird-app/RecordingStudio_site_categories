@@ -22,6 +22,13 @@ Then install dependencies:
 bundle install
 ```
 
+### Upgrading to 0.4.1
+
+No public API change. The gem still has no runtime Recording Studio
+dependency. The dummy app now pins Recording Studio `7.7.1` and the latest
+Accessible, Trashable, Root Switchable, Cache, Metrics, and FlatPack tags.
+See [UPGRADING.md](UPGRADING.md).
+
 ### Upgrading to 0.4.0
 
 No runtime Recording Studio dependency. When core is loaded, the mounted

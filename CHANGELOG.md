@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.1] - 2026-11-18
+
+### Changed
+
+* Dummy and development pins move to Recording Studio `v7.7.1`, Accessible
+  `v0.54.0`, Trashable `v1.2.0`, Root Switchable `v0.16.0`, Cache `v0.7.0`,
+  Metrics `v0.9.1`, and FlatPack `v0.1.378`. The gem itself still has no
+  runtime `recording_studio` dependency.
+
+### Upgrade notes
+
+- Registry, HasCategory, and helpers are unchanged and still work without
+  Recording Studio.
+- Hosts that copy the dummy addon stack need Recording Studio `7.7` with
+  those tags. Hosts that do not load core can stay as they are.
+
 ## [0.4.0] - 2026-11-05
 
 ### Added
@@ -178,6 +194,7 @@ registry, helpers, and dummy demo are unchanged.
 - Comprehensive README and documentation
 - Basic test suite with Minitest
 
+[0.4.1]: https://github.com/bowerbird-app/RecordingStudio_site_categories/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/bowerbird-app/RecordingStudio_site_categories/compare/v0.3.1...v0.4.0
 [0.3.1]: https://github.com/bowerbird-app/RecordingStudio_site_categories/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/bowerbird-app/RecordingStudio_site_categories/compare/v0.2.0...v0.3.0

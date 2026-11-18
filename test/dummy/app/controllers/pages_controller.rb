@@ -81,7 +81,7 @@ class PagesController < ApplicationController
   end
 
   def current_root_recording
-    RecordingStudio.root_recording_for(current_workspace)
+    RecordingStudio.create_root_recording!(current_workspace, actor: current_user)
   end
 
   def page_recording_for(page)

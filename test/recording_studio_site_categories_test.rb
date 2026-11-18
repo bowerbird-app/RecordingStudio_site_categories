@@ -12,7 +12,7 @@ class RecordingStudioSiteCategoriesTest < Minitest::Test
   end
 
   def test_version_exists
-    assert_equal "0.4.0", RecordingStudioSiteCategories::VERSION
+    assert_equal "0.4.1", RecordingStudioSiteCategories::VERSION
   end
 
   def test_gemspec_stays_free_of_a_runtime_recording_studio_dependency
